@@ -1,22 +1,23 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Jasmine & Raman | Wedding Invitation</title>
+<title>Happy Teacher's Day — Surbhi Mam</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Italiana&family=Playfair+Display:ital,wght@0,400;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
 <style>
 
-/* =====================================================
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+
+/* =========================================================
    RESET
-===================================================== */
+========================================================= */
 
 *{
     margin:0;
@@ -29,1044 +30,136 @@ html{
 }
 
 body{
-    background:#f8f2e9;
-    color:#3e302b;
-    font-family:"DM Sans",sans-serif;
+    margin:0;
     overflow-x:hidden;
-}
-
-:root{
-    --gold:#b48a4b;
-    --darkGold:#8f6732;
-    --cream:#fffaf2;
-    --pink:#d9879e;
-    --brown:#59453c;
-    --muted:#8d7b70;
+    background:#080706;
+    color:#f5ead8;
+    font-family:"DM Sans",sans-serif;
 }
 
 
-/* =====================================================
-   LIVE BACKGROUND
-===================================================== */
+/* =========================================================
+   THREE.JS
+========================================================= */
 
-#garden{
+#canvas-container{
     position:fixed;
     inset:0;
-    z-index:-10;
-    overflow:hidden;
+    z-index:0;
+}
+
+canvas{
+    display:block;
+}
+
+
+/* =========================================================
+   CINEMATIC OVERLAY
+========================================================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    z-index:2;
     pointer-events:none;
 
     background:
-    radial-gradient(
-        circle at 50% 15%,
-        rgba(255,255,255,.9),
-        transparent 35%
-    ),
-    linear-gradient(
-        135deg,
-        #f9f2e8,
-        #f3e7dc 50%,
-        #e9ddd2
-    );
-}
-
-.flower,
-.petal,
-.butterfly{
-    position:absolute;
-    pointer-events:none;
-    user-select:none;
-}
-
-.flower{
-    opacity:.32;
-    animation:floatFlower linear infinite;
-}
-
-.flower.one{
-    left:4%;
-    top:12%;
-    font-size:55px;
-    animation-duration:15s;
-}
-
-.flower.two{
-    right:4%;
-    top:35%;
-    font-size:48px;
-    animation-duration:19s;
-}
-
-.flower.three{
-    left:12%;
-    bottom:12%;
-    font-size:40px;
-    animation-duration:17s;
-}
-
-.flower.four{
-    right:14%;
-    bottom:8%;
-    font-size:60px;
-    animation-duration:21s;
-}
-
-@keyframes floatFlower{
-    0%,100%{
-        transform:translateY(0) rotate(0);
-    }
-
-    50%{
-        transform:translateY(-22px) rotate(10deg);
-    }
-}
-
-.petal{
-    width:8px;
-    height:12px;
-    border-radius:100% 0 100% 0;
-    background:#e7a8b7;
-    opacity:.5;
-    animation:fall linear infinite;
-}
-
-@keyframes fall{
-    from{
-        transform:translate3d(0,-10vh,0) rotate(0);
-    }
-
-    to{
-        transform:translate3d(100px,110vh,0) rotate(360deg);
-    }
-}
-
-.butterfly{
-    font-size:22px;
-    opacity:.4;
-    animation:butterflyMove 16s ease-in-out infinite;
-}
-
-.b1{
-    left:8%;
-    top:35%;
-}
-
-.b2{
-    right:12%;
-    top:22%;
-    animation-delay:4s;
-}
-
-.b3{
-    left:45%;
-    top:70%;
-    animation-delay:8s;
-}
-
-@keyframes butterflyMove{
-    0%,100%{
-        transform:translate(0,0) rotate(-5deg);
-    }
-
-    25%{
-        transform:translate(35px,-25px) rotate(8deg);
-    }
-
-    50%{
-        transform:translate(-15px,-50px) rotate(-8deg);
-    }
-
-    75%{
-        transform:translate(40px,-20px) rotate(6deg);
-    }
+        radial-gradient(
+            circle at 50% 42%,
+            transparent 15%,
+            rgba(0,0,0,.18) 55%,
+            rgba(0,0,0,.72) 100%
+        );
 }
 
 
-/* =====================================================
-   INTRO
-===================================================== */
-
-.introScreen{
+.noise{
     position:fixed;
     inset:0;
-    z-index:9999;
+    z-index:3;
+    pointer-events:none;
 
-    background:
-    radial-gradient(
-        circle at center,
-        #fffaf3 0%,
-        #f1e3d5 55%,
-        #e6d2c2 100%
-    );
+    opacity:.035;
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+
+/* =========================================================
+   LOADER
+========================================================= */
+
+.loader{
+    position:fixed;
+    inset:0;
+
+    background:#080706;
+
+    z-index:30;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    overflow:hidden;
-
     transition:
-    opacity 1.2s ease,
-    visibility 1.2s ease;
+        opacity 1.2s ease,
+        visibility 1.2s ease;
 }
 
-.introScreen.hide{
+.loader.hide{
     opacity:0;
     visibility:hidden;
     pointer-events:none;
 }
 
-.revealCenter{
-    position:absolute;
-    z-index:40;
+.loader-inner{
     text-align:center;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    pointer-events:none;
-    width:100%;
 }
 
-.revealCenter h1{
-    font-family:"Italiana",serif;
-    font-size:clamp(58px,9vw,105px);
-    font-weight:400;
-    line-height:.9;
-    color:#4d3932;
-    white-space:nowrap;
-}
-
-.revealCenter h1 .amp{
-    display:inline-block;
-    font-family:"Playfair Display",serif;
-    font-style:italic;
-    color:var(--darkGold);
-    font-size:.38em;
-    margin:0 12px;
-    vertical-align:middle;
-}
-
-
-/* =====================================================
-   DOORS
-===================================================== */
-
-.doorWrap{
-    position:absolute;
-    inset:0;
-    display:flex;
-    z-index:20;
-    cursor:pointer;
-}
-
-.door{
-    width:50%;
-    height:100%;
-    position:relative;
-
-    background:
-    linear-gradient(
-        90deg,
-        #ead9ca,
-        #f7eee5,
-        #e3cfc0
-    );
-
-    border:1px solid rgba(180,138,75,.2);
-
-    transition:
-    transform 1.8s
-    cubic-bezier(.77,0,.18,1);
-}
-
-.leftDoor{
-    transform-origin:left center;
-}
-
-.rightDoor{
-    transform-origin:right center;
-}
-
-.door:before{
-    content:"";
-    position:absolute;
-    inset:28px;
-    border:1px solid rgba(180,138,75,.22);
-}
-
-.door:after{
-    content:"";
-    position:absolute;
-    top:8%;
-    bottom:8%;
-    left:10%;
-    right:10%;
-    border:1px solid rgba(180,138,75,.14);
-}
-
-.introScreen.opened .leftDoor{
-    transform:translateX(-100%);
-}
-
-.introScreen.opened .rightDoor{
-    transform:translateX(100%);
-}
-
-
-/* =====================================================
-   HANDS
-===================================================== */
-
-.handScene{
-    position:absolute;
-    z-index:35;
-    left:50%;
-    top:54%;
-    transform:translate(-50%,-50%);
-    width:min(560px,90vw);
-    height:360px;
-    pointer-events:none;
-    filter:drop-shadow(0 15px 30px rgba(70,40,25,.10));
-}
-
-.sleeve{
-    position:absolute;
-    width:175px;
-    height:205px;
-    bottom:0;
-    border-radius:90px 90px 20px 20px;
-
-    box-shadow:
-    inset 0 0 25px rgba(255,255,255,.16),
-    0 12px 30px rgba(70,40,25,.08);
-}
-
-.brideSleeve{
-    left:25px;
-
-    background:
-    linear-gradient(
-        135deg,
-        #a94f6d,
-        #d9859b 35%,
-        #f0b4c3 58%,
-        #b75b76
-    );
-
-    transform:rotate(-16deg);
-}
-
-.groomSleeve{
-    right:25px;
-
-    background:
-    linear-gradient(
-        135deg,
-        #304f78,
-        #587da8 35%,
-        #8da8c8 58%,
-        #3b5d87
-    );
-
-    transform:rotate(16deg);
-}
-
-.brideSleeve:after,
-.groomSleeve:after{
-    content:"";
-    position:absolute;
-    top:18px;
-    left:25%;
-    width:50%;
-    height:2px;
-    background:rgba(255,255,255,.4);
-}
-
-.hand{
-    position:absolute;
-    width:140px;
-    height:88px;
-
-    background:
-    linear-gradient(
-        135deg,
-        #eeb99c,
-        #ffd9c1 48%,
-        #dfa486
-    );
-
-    border-radius:65% 60% 48% 48%;
-    top:74px;
-
-    box-shadow:
-    inset -6px -8px 12px rgba(100,50,30,.08),
-    inset 4px 4px 10px rgba(255,255,255,.25),
-    0 10px 20px rgba(80,40,20,.08);
-}
-
-.brideHand{
-    left:115px;
-    transform:rotate(-15deg);
-}
-
-.groomHand{
-    right:115px;
-    transform:rotate(15deg);
-}
-
-.hand:before,
-.hand:after{
-    content:"";
-    position:absolute;
-    width:66px;
-    height:23px;
-    background:#f3c6a8;
-    border-radius:30px;
-    top:0;
-}
-
-.hand:before{
-    left:30px;
-    transform:rotate(-8deg);
-}
-
-.hand:after{
-    left:52px;
-    top:15px;
-    transform:rotate(5deg);
-}
-
-.brideHand:after,
-.groomHand:after{
-    box-shadow:
-    12px 5px 0 #efbd9f,
-    22px 7px 0 #efbd9f;
-}
-
-.heart{
-    position:absolute;
-    left:50%;
-    top:54px;
-    transform:translateX(-50%) scale(.4);
-    color:#d96f88;
-    font-size:42px;
-    opacity:.15;
-
-    text-shadow:
-    0 0 12px rgba(217,111,136,.5),
-    0 0 35px rgba(217,111,136,.35);
-
-    animation:heartReveal 2.4s ease-in-out infinite;
-}
-
-@keyframes heartReveal{
-    0%,100%{
-        opacity:.15;
-        transform:translateX(-50%) scale(.55);
-    }
-
-    50%{
-        opacity:.9;
-        transform:translateX(-50%) scale(1);
-    }
-}
-
-.spark{
-    position:absolute;
-    left:50%;
-    top:65px;
-    width:5px;
-    height:5px;
-    border-radius:50%;
-    background:#c49a55;
-    opacity:.7;
-    animation:sparkFloat 2.5s infinite;
-}
-
-.s1{transform:translate(-80px,20px);}
-.s2{transform:translate(70px,30px);animation-delay:.5s;}
-.s3{transform:translate(-40px,-20px);animation-delay:1s;}
-.s4{transform:translate(45px,-25px);animation-delay:1.5s;}
-
-@keyframes sparkFloat{
-    0%,100%{
-        opacity:0;
-        transform:translateY(10px) scale(.4);
-    }
-
-    50%{
-        opacity:1;
-        transform:translateY(-25px) scale(1.3);
-    }
-}
-
-
-/* =====================================================
-   MAIN
-===================================================== */
-
-main{
-    opacity:0;
-    transition:1.5s;
-}
-
-main.visible{
-    opacity:1;
-}
-
-header{
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    height:82px;
-    padding:0 5%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    z-index:500;
-
-    background:
-    linear-gradient(
-        rgba(248,242,233,.95),
-        transparent
-    );
-}
-
-.logo{
-    font-family:"Cinzel",serif;
-    font-size:12px;
-    letter-spacing:4px;
-    color:#4d3932;
-}
-
-.logo span{
-    color:var(--gold);
-}
-
-.menuBtn{
-    width:45px;
-    height:45px;
-    border-radius:50%;
-    background:rgba(255,250,243,.7);
-    border:1px solid rgba(180,138,75,.4);
-    color:#4d3932;
-    cursor:pointer;
-}
-
-
-/* =====================================================
-   MENU
-===================================================== */
-
-.menu{
-    position:fixed;
-    inset:0;
-    background:rgba(247,238,228,.96);
-    backdrop-filter:blur(25px);
-    z-index:1000;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    transform:translateY(-100%);
-    transition:.8s cubic-bezier(.77,0,.18,1);
-}
-
-.menu.open{
-    transform:translateY(0);
-}
-
-.menuClose{
-    position:absolute;
-    right:5%;
-    top:25px;
-    background:none;
-    border:0;
-    color:#4d3932;
-    font-size:35px;
-    cursor:pointer;
-}
-
-.menuLinks{
-    display:flex;
-    flex-direction:column;
-    text-align:center;
-    gap:10px;
-}
-
-.menuLinks a{
-    color:#4d3932;
-    text-decoration:none;
-    font-family:"Italiana",serif;
-    font-size:clamp(48px,7vw,82px);
-    transition:.3s;
-}
-
-.menuLinks a:hover{
-    color:var(--gold);
-}
-
-
-/* =====================================================
-   HERO
-===================================================== */
-
-.hero{
-    min-height:100svh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:100px 20px;
-}
-
-.heroContent{
-    max-width:1100px;
-    width:100%;
-}
-
-.eyebrow{
-    color:var(--darkGold);
-    font-size:8px;
-    letter-spacing:6px;
-}
-
-.heroTitle{
-    margin-top:35px;
-    font-family:"Italiana",serif;
-    font-weight:400;
-    font-size:clamp(68px,12vw,150px);
-    line-height:.82;
-    letter-spacing:-3px;
-    color:#4b3933;
-    white-space:nowrap;
-}
-
-.heroTitle .amp{
-    display:inline-block;
-    font-family:"Playfair Display",serif;
-    font-size:.30em;
-    font-style:italic;
-    color:var(--darkGold);
-    margin:0 12px;
-    vertical-align:middle;
-}
-
-.heroSub{
-    margin-top:45px;
-    color:#8a7669;
-    font-size:8px;
+.small{
+    font-size:10px;
     letter-spacing:5px;
+    text-transform:uppercase;
+    color:#c8a978;
 }
 
-.heroDate{
-    margin-top:14px;
-    font-family:"Cinzel",serif;
-    font-size:12px;
-    letter-spacing:3px;
-    color:#59453c;
-}
+.loader-bar{
+    width:180px;
+    height:1px;
 
-.heroVenue{
-    margin-top:10px;
-    color:#8c796c;
-    font-size:9px;
-}
+    margin-top:22px;
 
-.heroBtn,
-.mapBtn{
-    display:inline-block;
-    margin-top:35px;
-    padding:15px 28px;
-    border:1px solid rgba(180,138,75,.55);
-    color:#59453c;
-    text-decoration:none;
-    font-size:8px;
-    letter-spacing:3px;
-    transition:.4s;
-    background:rgba(255,255,255,.25);
-}
+    background:#30291f;
 
-.heroBtn:hover,
-.mapBtn:hover{
-    background:var(--gold);
-    color:white;
-}
-
-
-/* =====================================================
-   SECTIONS
-===================================================== */
-
-.section{
-    width:min(1150px,90%);
-    margin:auto;
-    padding:150px 0;
-}
-
-.sectionNo{
-    color:#a27b47;
-    font-size:8px;
-    letter-spacing:4px;
-}
-
-.sectionTitle{
-    margin-top:25px;
-    font-family:"Italiana",serif;
-    font-weight:400;
-    font-size:clamp(60px,9vw,110px);
-    line-height:.85;
-    color:#4b3933;
-}
-
-.sectionTitle em{
-    color:#b1844a;
-    font-family:"Playfair Display",serif;
-    font-size:.55em;
-}
-
-
-/* =====================================================
-   STORY
-===================================================== */
-
-.story{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:100px;
-    align-items:center;
-}
-
-.storyText{
-    font-family:"Playfair Display",serif;
-    font-size:clamp(25px,3vw,40px);
-    line-height:1.4;
-    color:#5b4840;
-}
-
-.storyText em{
-    color:#b1844a;
-}
-
-.storySmall{
-    margin-top:30px;
-    color:#8b786d;
-    font-size:11px;
-    line-height:1.9;
-}
-
-
-/* =====================================================
-   EVENTS
-===================================================== */
-
-.events{
-    margin-top:80px;
-    border-top:1px solid rgba(180,138,75,.25);
-}
-
-.event{
-    display:grid;
-    grid-template-columns:60px minmax(0,1fr) 300px;
-    gap:35px;
-    padding:45px 10px;
-    border-bottom:1px solid rgba(180,138,75,.25);
-    align-items:center;
-    transition:.4s;
-}
-
-.event:hover{
-    background:rgba(180,138,75,.05);
-    padding-left:25px;
-}
-
-.eventNo{
-    color:#a48c7d;
-    font-size:9px;
-}
-
-.eventMain{
-    min-width:0;
-}
-
-.eventMain small{
-    color:#a27842;
-    font-size:7px;
-    letter-spacing:4px;
-}
-
-.eventMain h3{
-    margin-top:10px;
-    font-family:"Italiana",serif;
-    font-size:65px;
-    font-weight:400;
-    line-height:.9;
-    color:#4b3933;
-}
-
-.eventMain p{
-    margin-top:14px;
-    color:#88756a;
-    font-size:9px;
-    line-height:1.7;
-}
-
-
-/* =====================================================
-   EVENT IMAGES
-   IMPORTANT:
-   object-fit: contain style through image box
-   so faces don't get cropped.
-===================================================== */
-
-.eventImage{
-    width:100%;
-    height:220px;
-
-    position:relative;
     overflow:hidden;
-
-    border:1px solid rgba(180,138,75,.35);
-
-    background-color:#eadfd6;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    box-shadow:
-    0 15px 35px rgba(70,40,20,.07);
-
-    transition:
-    transform .6s ease,
-    box-shadow .6s ease;
 }
 
-.event:hover .eventImage{
-    transform:scale(1.025);
-
-    box-shadow:
-    0 20px 40px rgba(70,40,20,.12);
-}
-
-/* IMAGE AS IMG */
-.eventImage img{
-    width:100%;
+.loader-bar div{
+    width:0;
     height:100%;
 
-    object-fit:contain;
+    background:#d6b77d;
 
-    object-position:center center;
-
-    display:block;
-
-    background:#eadfd6;
+    animation:load 1.8s forwards;
 }
 
-/* Elegant inner frame */
-.eventImage:after{
-    content:"";
-    position:absolute;
-
-    inset:10px;
-
-    border:1px solid rgba(255,255,255,.7);
-
-    pointer-events:none;
-
-    z-index:2;
+@keyframes load{
+    to{
+        width:100%;
+    }
 }
 
 
-/* =====================================================
-   COUNTDOWN
-===================================================== */
+/* =========================================================
+   INTRO
+========================================================= */
 
-.countdown{
-    text-align:center;
-}
-
-.counter{
-    margin-top:70px;
-
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-
-    border-top:1px solid rgba(180,138,75,.25);
-    border-bottom:1px solid rgba(180,138,75,.25);
-}
-
-.counterBox{
-    padding:35px 10px;
-    border-right:1px solid rgba(180,138,75,.18);
-}
-
-.counterBox:last-child{
-    border:0;
-}
-
-.counterBox strong{
-    font-family:"Italiana",serif;
-    font-size:60px;
-    font-weight:400;
-    color:#4b3933;
-}
-
-.counterBox span{
-    display:block;
-    margin-top:5px;
-    color:#8d786c;
-    font-size:7px;
-    letter-spacing:4px;
-}
-
-
-/* =====================================================
-   GALLERY
-===================================================== */
-
-.gallery{
-    margin-top:80px;
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(2,minmax(0,1fr));
-
-    grid-auto-rows:auto;
-
-    gap:18px;
-}
-
-/*
-   IMPORTANT:
-   Gallery images are now IMG elements.
-   object-fit:contain means full photo visible.
-*/
-
-.galleryItem{
-    position:relative;
-
-    width:100%;
-
-    min-width:0;
-    min-height:0;
-
-    background:#eadfd6;
-
-    border:1px solid rgba(180,138,75,.25);
-
-    overflow:hidden;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    transition:
-    transform .6s ease,
-    box-shadow .6s ease;
-}
-
-.galleryItem img{
-    width:100%;
-    height:100%;
-
-    object-fit:contain;
-
-    object-position:center center;
-
-    display:block;
-
-    background:#eadfd6;
-}
-
-.galleryItem:hover{
-    transform:scale(.985);
-
-    box-shadow:
-    0 20px 45px rgba(70,40,20,.10);
-}
-
-.galleryItem.large{
-    grid-column:span 2;
-    height:520px;
-}
-
-.galleryItem:not(.large){
-    height:400px;
-}
-
-.galleryItem:after{
-    content:"";
-    position:absolute;
-
-    inset:10px;
-
-    border:1px solid rgba(255,255,255,.65);
-
-    pointer-events:none;
-
-    z-index:3;
-}
-
-.galleryLabel{
-    position:absolute;
-
-    left:20px;
-    bottom:20px;
-
-    color:white;
-
-    font-size:8px;
-    letter-spacing:3px;
-
-    text-shadow:
-    0 2px 10px rgba(0,0,0,.5);
-
-    z-index:5;
-}
-
-
-/* =====================================================
-   SCRATCH CARDS
-===================================================== */
-
-.scratchGrid{
-    margin-top:70px;
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(4,minmax(0,1fr));
-
-    gap:18px;
-}
-
-.scratchCard{
-    position:relative;
-    height:250px;
-    overflow:hidden;
-
-    border:1px solid rgba(180,138,75,.35);
-
-    background:#fffaf2;
-
-    box-shadow:
-    0 15px 35px rgba(80,50,30,.07);
-
-    transition:.4s;
-}
-
-.scratchCard:hover{
-    transform:translateY(-5px);
-}
-
-.messageCard{
-    position:absolute;
+.intro{
+    position:fixed;
     inset:0;
-    z-index:1;
+
+    z-index:20;
 
     display:flex;
     align-items:center;
@@ -1074,1018 +167,332 @@ header{
     flex-direction:column;
 
     text-align:center;
+
     padding:25px;
 
     background:
-    radial-gradient(
-        circle at top,
-        rgba(255,255,255,.9),
-        transparent 60%
-    ),
-    #fffaf2;
+        radial-gradient(
+            circle at center,
+            #18120d 0%,
+            #080706 65%
+        );
+
+    transition:
+        opacity 1.5s ease,
+        visibility 1.5s ease;
 }
 
-.messageCard small{
-    color:#a27842;
-    font-size:8px;
-    letter-spacing:3px;
-}
-
-.messageCard h4{
-    margin-top:15px;
-    font-family:"Italiana",serif;
-    font-size:30px;
-    font-weight:400;
-    color:#4b3933;
-}
-
-.messageCard p{
-    margin-top:10px;
-    font-family:"Playfair Display",serif;
-    font-style:italic;
-    color:#806d62;
-    font-size:13px;
-    line-height:1.5;
-    max-width:230px;
-}
-
-.messageCard span{
-    display:block;
-    margin-top:15px;
-    color:#b48a4b;
-    font-family:"Cinzel",serif;
-    font-size:8px;
-    letter-spacing:2px;
-}
-
-.scratchCanvas{
-    position:absolute;
-    inset:0;
-
-    width:100%;
-    height:100%;
-
-    z-index:5;
-
-    cursor:crosshair;
-
-    touch-action:none;
-}
-
-.scratchHint{
-    position:absolute;
-    z-index:6;
-
-    top:50%;
-    left:50%;
-
-    transform:translate(-50%,-50%);
-
+.intro.hide{
+    opacity:0;
+    visibility:hidden;
     pointer-events:none;
+}
 
-    text-align:center;
+.intro h1{
+    margin-top:20px;
 
-    color:#fff;
+    font-family:"Cormorant Garamond",serif;
 
-    font-family:"Cinzel",serif;
+    font-size:
+        clamp(52px,8vw,108px);
+
+    font-weight:500;
+
+    line-height:.88;
+
+    max-width:950px;
+
+    letter-spacing:-2px;
+}
+
+.intro h1 span{
+    display:block;
+
+    color:#d6b77d;
+
+    font-style:italic;
+
+    margin-top:8px;
+}
+
+.enter{
+    margin-top:48px;
+
+    border:
+        1px solid
+        rgba(214,183,125,.5);
+
+    background:transparent;
+
+    color:#f5ead8;
+
+    padding:
+        16px 32px;
+
+    border-radius:100px;
+
+    letter-spacing:3px;
 
     font-size:10px;
 
-    letter-spacing:2px;
+    cursor:pointer;
 
-    text-shadow:
-    0 2px 8px rgba(70,40,20,.35);
-
-    transition:.4s;
+    transition:
+        .45s ease;
 }
 
-.scratchHint.hide{
-    opacity:0;
-}
+.enter:hover{
+    background:#d6b77d;
 
-.scratchCoverText{
-    font-size:25px;
-    display:block;
-    margin-bottom:8px;
+    color:#17120d;
+
+    transform:
+        translateY(-4px);
 }
 
 
-/* =====================================================
-   VENUE
-===================================================== */
+/* =========================================================
+   CONTENT
+========================================================= */
 
-.venue{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-
-    min-height:600px;
-
-    border:1px solid rgba(180,138,75,.25);
-
-    background:rgba(255,255,255,.22);
-}
-
-.venueText{
-    padding:70px;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-}
-
-.venueName{
-    margin-top:30px;
-
-    font-family:"Italiana",serif;
-
-    font-size:clamp(55px,8vw,95px);
-
-    line-height:.8;
-
-    color:#4b3933;
-}
-
-.venueName em{
-    color:#b1844a;
-    font-family:"Playfair Display",serif;
-    font-size:.55em;
-}
-
-.address{
-    margin-top:30px;
-
-    color:#807066;
-
-    font-size:11px;
-
-    line-height:1.8;
-}
-
-.venueVisual{
+.content{
     position:relative;
 
-    background:
-    linear-gradient(#0001,#0003),
-    url("https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1000&q=85");
+    z-index:5;
 
-    background-size:cover;
-    background-position:center;
+    min-height:430vh;
+
+    pointer-events:none;
 }
 
-.venueVisual:after{
-    content:"✦";
+.hero-space{
+    height:100vh;
+}
 
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.message{
     position:absolute;
-    inset:0;
 
-    display:grid;
-    place-items:center;
+    top:135vh;
 
-    color:white;
+    left:50%;
 
-    font-size:55px;
+    transform:
+        translateX(-50%);
 
-    text-shadow:
-    0 0 20px rgba(255,255,255,.7);
-}
+    width:min(850px,90%);
 
-
-/* =====================================================
-   RSVP
-===================================================== */
-
-.rsvp{
     text-align:center;
+
+    opacity:.95;
 }
 
-.rsvpText{
-    max-width:600px;
-    margin:35px auto;
+.message .label{
+    color:#c8a978;
 
-    color:#817167;
+    font-size:10px;
 
-    font-size:11px;
+    letter-spacing:4px;
+
+    text-transform:uppercase;
+}
+
+.message h2{
+    margin-top:18px;
+
+    font-family:
+        "Cormorant Garamond",
+        serif;
+
+    font-size:
+        clamp(45px,7vw,88px);
+
+    line-height:.95;
+
+    font-weight:500;
+}
+
+.message p{
+    margin-top:20px;
+
+    font-size:14px;
 
     line-height:1.9;
-}
 
-.rsvpBtn{
-    display:inline-block;
-
-    padding:18px 35px;
-
-    background:#b48a4b;
-
-    color:white;
-
-    text-decoration:none;
-
-    font-size:8px;
-
-    letter-spacing:3px;
-
-    transition:.4s;
-}
-
-.rsvpBtn:hover{
-    background:#8f6732;
-    transform:translateY(-4px);
+    color:#cfc0aa;
 }
 
 
-/* =====================================================
-   FINAL
-===================================================== */
+/* =========================================================
+   FINAL CARD
+========================================================= */
 
 .final{
-    min-height:90vh;
+    position:absolute;
 
-    display:flex;
+    top:325vh;
 
-    justify-content:center;
-    align-items:center;
+    left:50%;
+
+    transform:
+        translateX(-50%);
+
+    width:min(900px,90%);
 
     text-align:center;
 
-    padding:80px 20px;
+    padding:
+        70px 35px;
+
+    border:
+        1px solid
+        rgba(214,183,125,.18);
+
+    background:
+        rgba(20,15,11,.52);
+
+    backdrop-filter:
+        blur(18px);
+
+    box-shadow:
+        0 30px 100px
+        rgba(0,0,0,.4);
 }
 
-.final small{
-    color:#a07842;
+.final .heart{
+    font-size:30px;
 
-    font-size:8px;
-
-    letter-spacing:5px;
+    color:#d6b77d;
 }
 
 .final h2{
-    margin-top:25px;
+    margin-top:18px;
 
-    font-family:"Italiana",serif;
+    font-family:
+        "Cormorant Garamond",
+        serif;
 
-    font-size:clamp(70px,12vw,150px);
+    font-size:
+        clamp(48px,7vw,92px);
 
-    font-weight:400;
+    font-weight:500;
 
-    line-height:.82;
-
-    color:#4b3933;
+    line-height:.9;
 }
 
 .final h2 span{
-    font-family:"Italiana",serif;
+    color:#d6b77d;
 
-    color:#b1844a;
-
-    font-size:1em;
-
-    margin-left:10px;
+    font-style:italic;
 }
 
 .final p{
+    margin:
+        30px auto 0;
+
+    max-width:620px;
+
+    color:#c9bba6;
+
+    font-size:14px;
+
+    line-height:1.95;
+}
+
+.signature{
     margin-top:40px;
 
-    color:#847066;
+    font-family:
+        "Cormorant Garamond",
+        serif;
 
-    font-size:8px;
+    font-size:27px;
+
+    font-style:italic;
+
+    color:#e2c48c;
+}
+
+
+/* =========================================================
+   SCROLL HINT
+========================================================= */
+
+.scroll-hint{
+    position:fixed;
+
+    z-index:8;
+
+    bottom:28px;
+
+    left:50%;
+
+    transform:
+        translateX(-50%);
+
+    text-align:center;
+
+    font-size:9px;
 
     letter-spacing:4px;
+
+    text-transform:uppercase;
+
+    color:#d8c4a4;
+
+    opacity:.7;
+
+    transition:
+        opacity .5s;
 }
 
-footer{
-    padding:30px 5%;
+.scroll-line{
+    width:1px;
 
-    border-top:
-    1px solid rgba(180,138,75,.2);
-
-    display:flex;
-
-    justify-content:space-between;
-
-    color:#806d62;
-
-    font-size:7px;
-
-    letter-spacing:3px;
-}
-
-
-/* =====================================================
-   REVEAL
-===================================================== */
-
-.reveal{
-    opacity:0;
-
-    transform:translateY(40px);
-
-    transition:1s ease;
-}
-
-.reveal.show{
-    opacity:1;
-
-    transform:translateY(0);
-}
-
-
-/* =====================================================
-   MUSIC
-===================================================== */
-
-.musicBtn{
-    position:fixed;
-
-    right:22px;
-    bottom:22px;
-
-    z-index:800;
-
-    width:48px;
     height:48px;
 
-    border-radius:50%;
+    background:
+        linear-gradient(
+            #d6b77d,
+            transparent
+        );
 
-    border:1px solid rgba(180,138,75,.5);
-
-    background:rgba(255,250,243,.85);
-
-    color:#8f6732;
-
-    cursor:pointer;
-
-    box-shadow:
-    0 8px 25px rgba(70,40,20,.08);
+    margin:
+        10px auto 0;
 }
 
 
-/* =====================================================
-   BACK BUTTON
-===================================================== */
-
-.backCover{
-    position:fixed;
-
-    left:20px;
-    bottom:22px;
-
-    z-index:800;
-
-    padding:13px 18px;
-
-    border:1px solid rgba(180,138,75,.4);
-
-    background:rgba(255,250,243,.85);
-
-    color:#715949;
-
-    text-decoration:none;
-
-    font-size:7px;
-
-    letter-spacing:2px;
-}
-
-
-/* =====================================================
-   TABLET
-===================================================== */
-
-@media(max-width:900px){
-
-    .section{
-        width:min(92%,700px);
-        padding:110px 0;
-    }
-
-    .story{
-        grid-template-columns:1fr;
-        gap:55px;
-    }
-
-    .event{
-        grid-template-columns:45px minmax(0,1fr) 240px;
-        gap:20px;
-    }
-
-    .eventMain h3{
-        font-size:55px;
-    }
-
-    .eventImage{
-        height:200px;
-    }
-
-    .scratchGrid{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-    }
-
-    .venue{
-        grid-template-columns:1fr;
-    }
-
-    .venueVisual{
-        min-height:400px;
-    }
-
-}
-
-
-/* =====================================================
+/* =========================================================
    MOBILE
-===================================================== */
+========================================================= */
 
-@media(max-width:700px){
+@media(max-width:600px){
 
-    body{
-        width:100%;
+    .intro h1{
+        letter-spacing:-1px;
     }
 
-    header{
-        height:70px;
-        padding:0 20px;
+    .message{
+        top:125vh;
     }
 
-    .logo{
-        font-size:10px;
-        letter-spacing:3px;
+    .message p{
+        font-size:13px;
     }
-
-    .menuBtn{
-        width:42px;
-        height:42px;
-    }
-
-
-    /* INTRO */
-
-    .revealCenter{
-        width:100%;
-        padding:0 20px;
-    }
-
-    .revealCenter h1{
-        font-size:clamp(38px,12vw,55px);
-        white-space:normal;
-    }
-
-    .revealCenter h1 .amp{
-        margin:0 5px;
-    }
-
-    .handScene{
-        width:430px;
-        height:300px;
-
-        transform:
-        translate(-50%,-50%)
-        scale(.68);
-    }
-
-    .sleeve{
-        width:155px;
-        height:185px;
-    }
-
-    .brideSleeve{
-        left:10px;
-    }
-
-    .groomSleeve{
-        right:10px;
-    }
-
-    .brideHand{
-        left:80px;
-    }
-
-    .groomHand{
-        right:80px;
-    }
-
-
-    /* HERO */
-
-    .hero{
-        min-height:100svh;
-
-        padding:
-        100px 18px 70px;
-    }
-
-    .eyebrow{
-        font-size:7px;
-        letter-spacing:3px;
-    }
-
-    .heroTitle{
-        font-size:clamp(48px,15vw,65px);
-
-        letter-spacing:-2px;
-
-        white-space:normal;
-
-        line-height:.9;
-    }
-
-    .heroTitle .amp{
-        margin:0 4px;
-    }
-
-    .heroSub{
-        margin-top:35px;
-
-        font-size:7px;
-
-        letter-spacing:3px;
-    }
-
-    .heroDate{
-        font-size:10px;
-        letter-spacing:1.5px;
-    }
-
-    .heroVenue{
-        font-size:8px;
-        line-height:1.6;
-    }
-
-    .heroBtn{
-        padding:14px 20px;
-        font-size:7px;
-    }
-
-
-    /* SECTIONS */
-
-    .section{
-        width:calc(100% - 34px);
-
-        padding:90px 0;
-    }
-
-    .sectionNo{
-        font-size:7px;
-        letter-spacing:3px;
-    }
-
-    .sectionTitle{
-        font-size:clamp(48px,15vw,70px);
-        line-height:.9;
-    }
-
-
-    /* STORY */
-
-    .story{
-        grid-template-columns:1fr;
-        gap:45px;
-    }
-
-    .storyText{
-        font-size:27px;
-    }
-
-    .storySmall{
-        font-size:10px;
-    }
-
-
-    /* EVENTS */
-
-    .events{
-        margin-top:55px;
-    }
-
-    .event{
-
-        display:grid;
-
-        grid-template-columns:
-        25px minmax(0,1fr);
-
-        gap:10px;
-
-        padding:32px 0;
-    }
-
-    .event:hover{
-        padding-left:5px;
-    }
-
-    .eventNo{
-        padding-top:5px;
-        font-size:8px;
-    }
-
-    .eventMain{
-        min-width:0;
-    }
-
-    .eventMain small{
-        display:block;
-
-        font-size:6px;
-
-        letter-spacing:2px;
-
-        line-height:1.5;
-    }
-
-    .eventMain h3{
-        font-size:clamp(42px,14vw,58px);
-
-        margin-top:10px;
-
-        line-height:.85;
-    }
-
-    .eventMain p{
-        margin-top:12px;
-
-        font-size:8px;
-
-        line-height:1.8;
-
-        white-space:normal;
-    }
-
-
-    /*
-       MOBILE EVENT IMAGES
-       Full image visible
-       Face safe
-    */
-
-    .eventImage{
-
-        grid-column:2;
-
-        width:100%;
-
-        height:auto;
-
-        aspect-ratio:4 / 5;
-
-        min-height:0;
-
-        margin-top:14px;
-
-        background:#eadfd6;
-
-        display:flex;
-
-        align-items:center;
-
-        justify-content:center;
-
-        border-radius:4px;
-
-        overflow:hidden;
-    }
-
-    .eventImage img{
-
-        width:100%;
-        height:100%;
-
-        object-fit:contain;
-
-        object-position:center;
-
-        background:#eadfd6;
-    }
-
-    .eventImage:after{
-        inset:8px;
-    }
-
-
-    /* COUNTDOWN */
-
-    .counter{
-        margin-top:50px;
-
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .counterBox{
-        padding:25px 8px;
-
-        border-right:
-        1px solid rgba(180,138,75,.18);
-
-        border-bottom:
-        1px solid rgba(180,138,75,.18);
-    }
-
-    .counterBox:nth-child(2){
-        border-right:0;
-    }
-
-    .counterBox:nth-child(3),
-    .counterBox:nth-child(4){
-        border-bottom:0;
-    }
-
-    .counterBox strong{
-        font-size:clamp(35px,11vw,50px);
-    }
-
-    .counterBox span{
-        font-size:6px;
-        letter-spacing:2px;
-    }
-
-
-    /* =================================================
-       GALLERY MOBILE
-    ================================================= */
-
-    .gallery{
-
-        margin-top:55px;
-
-        display:grid;
-
-        grid-template-columns:1fr;
-
-        gap:16px;
-    }
-
-    .galleryItem,
-    .galleryItem.large{
-
-        grid-column:auto;
-
-        width:100%;
-
-        height:auto;
-
-        min-height:0;
-
-        aspect-ratio:4 / 5;
-
-        background:#eadfd6;
-
-        display:flex;
-
-        align-items:center;
-
-        justify-content:center;
-
-        overflow:hidden;
-    }
-
-    .galleryItem img{
-
-        width:100%;
-        height:100%;
-
-        object-fit:contain;
-
-        object-position:center;
-
-        background:#eadfd6;
-    }
-
-    .galleryItem:after{
-        inset:10px;
-    }
-
-    .galleryLabel{
-        left:15px;
-        bottom:15px;
-
-        font-size:7px;
-        letter-spacing:2px;
-    }
-
-
-    /* SCRATCH */
-
-    .scratchGrid{
-
-        margin-top:50px;
-
-        grid-template-columns:
-        repeat(2,minmax(0,1fr));
-
-        gap:12px;
-    }
-
-    .scratchCard{
-
-        width:100%;
-
-        height:auto;
-
-        aspect-ratio:4 / 5;
-    }
-
-    .messageCard{
-        padding:12px;
-    }
-
-    .messageCard small{
-        font-size:6px;
-        letter-spacing:2px;
-    }
-
-    .messageCard h4{
-        font-size:22px;
-        margin-top:10px;
-    }
-
-    .messageCard p{
-        font-size:9px;
-        line-height:1.4;
-        margin-top:7px;
-    }
-
-    .messageCard span{
-        font-size:6px;
-        letter-spacing:1px;
-        margin-top:10px;
-    }
-
-    .scratchHint{
-        font-size:6px;
-        letter-spacing:1px;
-    }
-
-    .scratchCoverText{
-        font-size:19px;
-        margin-bottom:5px;
-    }
-
-
-    /* VENUE */
-
-    .venue{
-        grid-template-columns:1fr;
-
-        min-height:auto;
-    }
-
-    .venueText{
-        padding:50px 25px;
-    }
-
-    .venueName{
-        font-size:clamp(55px,18vw,80px);
-    }
-
-    .address{
-        font-size:10px;
-    }
-
-    .venueVisual{
-        min-height:clamp(280px,80vw,400px);
-    }
-
-
-    /* RSVP */
-
-    .rsvpText{
-        font-size:10px;
-        padding:0 5px;
-    }
-
-    .rsvpBtn{
-        padding:16px 22px;
-        font-size:7px;
-    }
-
-
-    /* FINAL */
 
     .final{
-        min-height:75vh;
-        padding:70px 18px;
-    }
+        top:315vh;
 
-    .final small{
-        font-size:6px;
-        letter-spacing:3px;
-    }
-
-    .final h2{
-        font-size:clamp(45px,14vw,62px);
-        line-height:.9;
-    }
-
-    .final h2 span{
-        display:block;
-        margin:8px 0 0;
+        padding:
+            50px 22px;
     }
 
     .final p{
-        font-size:6px;
-        letter-spacing:2px;
-        line-height:1.7;
-    }
-
-    footer{
-        padding:25px 20px;
-
-        flex-direction:column;
-
-        text-align:center;
-
-        gap:10px;
-
-        font-size:6px;
-    }
-
-    .backCover{
-        left:10px;
-        bottom:15px;
-
-        padding:11px 13px;
-
-        font-size:6px;
-    }
-
-    .musicBtn{
-        right:12px;
-        bottom:15px;
-
-        width:44px;
-        height:44px;
-    }
-
-}
-
-
-/* =====================================================
-   SMALL MOBILE
-===================================================== */
-
-@media(max-width:390px){
-
-    .section{
-        width:calc(100% - 28px);
-    }
-
-    .heroTitle{
-        font-size:47px;
-    }
-
-    .heroDate{
-        font-size:9px;
-        letter-spacing:1px;
-    }
-
-    .sectionTitle{
-        font-size:51px;
-    }
-
-    .event{
-        grid-template-columns:25px minmax(0,1fr);
-    }
-
-    .eventMain h3{
-        font-size:43px;
-    }
-
-    .eventImage{
-        aspect-ratio:4 / 5;
-    }
-
-    .galleryItem,
-    .galleryItem.large{
-        aspect-ratio:4 / 5;
-    }
-
-    .scratchGrid{
-        grid-template-columns:1fr;
-    }
-
-    .scratchCard{
-        aspect-ratio:4 / 5;
-    }
-
-}
-
-
-/* =====================================================
-   REDUCE MOTION
-===================================================== */
-
-@media(prefers-reduced-motion:reduce){
-
-    *,
-    *::before,
-    *::after{
-
-        animation-duration:.01ms !important;
-
-        animation-iteration-count:1 !important;
-
-        scroll-behavior:auto !important;
-
-        transition-duration:.01ms !important;
+        font-size:13px;
     }
 
 }
@@ -2097,1914 +504,2629 @@ footer{
 <body>
 
 
-<!-- =====================================================
-     LIVE BACKGROUND
-===================================================== -->
+<!-- =======================================================
+     LOADER
+======================================================= -->
 
-<div id="garden">
+<div class="loader" id="loader">
 
-    <div class="flower one">🌸</div>
-    <div class="flower two">🌿</div>
-    <div class="flower three">🌷</div>
-    <div class="flower four">🌸</div>
+    <div class="loader-inner">
 
-    <div class="butterfly b1">🦋</div>
-    <div class="butterfly b2">🦋</div>
-    <div class="butterfly b3">🦋</div>
-
-</div>
-
-
-<!-- MUSIC -->
-
-<audio id="song" loop preload="auto">
-    <source src="song.mp3" type="audio/mpeg">
-</audio>
-
-
-<!-- =====================================================
-     OPENING
-===================================================== -->
-
-<section class="introScreen" id="introScreen">
-
-    <div class="revealCenter">
-
-        <h1>
-            Jasmine
-            <span class="amp">&</span>
-            Raman
-        </h1>
-
-    </div>
-
-
-    <div class="doorWrap" id="doorWrap">
-
-        <div class="door leftDoor"></div>
-
-        <div class="door rightDoor"></div>
-
-
-        <div class="handScene">
-
-            <div class="sleeve brideSleeve"></div>
-
-            <div class="sleeve groomSleeve"></div>
-
-            <div class="hand brideHand"></div>
-
-            <div class="hand groomHand"></div>
-
-            <div class="heart">♥</div>
-
-            <span class="spark s1"></span>
-
-            <span class="spark s2"></span>
-
-            <span class="spark s3"></span>
-
-            <span class="spark s4"></span>
-
+        <div class="small">
+            Preparing your classroom
         </div>
 
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
-<main id="main">
-
-
-<header>
-
-    <div class="logo">
-        J <span>✦</span> R
-    </div>
-
-    <button
-        class="menuBtn"
-        id="menuBtn"
-        aria-label="Open menu">
-
-        ☰
-
-    </button>
-
-</header>
-
-
-<!-- MENU -->
-
-<div class="menu" id="menu">
-
-    <button
-        class="menuClose"
-        id="menuClose"
-        aria-label="Close menu">
-
-        ×
-
-    </button>
-
-
-    <div class="menuLinks">
-
-        <a href="#home">Home</a>
-
-        <a href="#story">Story</a>
-
-        <a href="#events">Events</a>
-
-        <a href="#gallery">Memories</a>
-
-        <a href="#venue">Venue</a>
-
-        <a href="#rsvp">RSVP</a>
+        <div class="loader-bar">
+            <div></div>
+        </div>
 
     </div>
 
 </div>
 
 
-<!-- =====================================================
-     HERO
-===================================================== -->
+<!-- =======================================================
+     INTRO
+======================================================= -->
 
-<section class="hero" id="home">
+<div class="intro" id="intro">
 
-    <div class="heroContent reveal">
-
-        <div class="eyebrow">
-            A NEW CHAPTER BEGINS
-        </div>
-
-
-        <h1 class="heroTitle">
-
-            Jasmine
-
-            <span class="amp">&</span>
-
-            Raman
-
-        </h1>
-
-
-        <div class="heroSub">
-            TOGETHER WITH THEIR FAMILIES
-        </div>
-
-
-        <div class="heroDate">
-            20 DECEMBER 2026
-        </div>
-
-
-        <div class="heroVenue">
-            Hotel Mirchi · Shahabad Markanda, Haryana
-        </div>
-
-
-        <a
-            href="#story"
-            class="heroBtn">
-
-            DISCOVER OUR STORY ↓
-
-        </a>
-
+    <div class="small">
+        A little journey back in time
     </div>
 
-</section>
+    <h1>
+
+        One More Time...
+
+        <span>
+            Let's Enter Our Classroom.
+        </span>
+
+    </h1>
+
+    <button
+        class="enter"
+        id="enterBtn">
+
+        ENTER CLASSROOM
+
+    </button>
+
+</div>
 
 
-<!-- =====================================================
-     STORY
-===================================================== -->
-
-<section class="section" id="story">
-
-    <div class="story">
+<!-- THREE.JS -->
+<div id="canvas-container"></div>
 
 
-        <div class="reveal">
+<div class="overlay"></div>
 
-            <div class="sectionNo">
-                01 — OUR STORY
-            </div>
+<div class="noise"></div>
 
 
-            <h2 class="sectionTitle">
+<!-- =======================================================
+     CONTENT
+======================================================= -->
 
-                Made for<br>
+<div class="content">
 
-                <em>each other.</em>
+    <div class="hero-space"></div>
 
-            </h2>
 
+    <!-- MESSAGE -->
+
+    <section class="message">
+
+        <div class="label">
+            Written with gratitude
         </div>
-
-
-        <div class="reveal">
-
-            <p class="storyText">
-
-                Two hearts, two stories,
-                one beautiful journey
-                that led them
-                <em>here.</em>
-
-            </p>
-
-
-            <p class="storySmall">
-
-                With love in their hearts
-                and their families beside them,
-                Jasmine and Raman invite you
-                to celebrate the beginning
-                of their forever.
-
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     EVENTS
-===================================================== -->
-
-<section class="section" id="events">
-
-
-    <div class="reveal">
-
-        <div class="sectionNo">
-            02 — THE CELEBRATION
-        </div>
-
-
-        <h2 class="sectionTitle">
-
-            Moments worth<br>
-
-            <em>remembering.</em>
-
-        </h2>
-
-    </div>
-
-
-    <div class="events">
-
-
-        <!-- HALDI -->
-
-        <div class="event reveal">
-
-            <div class="eventNo">
-                01
-            </div>
-
-
-            <div class="eventMain">
-
-                <small>
-                    A GOLDEN BEGINNING
-                </small>
-
-
-                <h3>
-                    Haldi
-                </h3>
-
-
-                <p>
-                    20 DECEMBER · 10:00 AM<br>
-                    HOTEL MIRCHI
-                </p>
-
-            </div>
-
-
-            <div
-                class="eventImage haldi"
-                role="img"
-                aria-label="Haldi ceremony">
-
-                <img
-                    src="haldi1.webp"
-                    alt="Haldi ceremony"
-                    loading="lazy">
-
-            </div>
-
-        </div>
-
-
-        <!-- MEHNDI -->
-
-        <div class="event reveal">
-
-            <div class="eventNo">
-                02
-            </div>
-
-
-            <div class="eventMain">
-
-                <small>
-                    AN EVENING OF HENNA
-                </small>
-
-
-                <h3>
-                    Mehndi
-                </h3>
-
-
-                <p>
-                    20 DECEMBER · 4:00 PM<br>
-                    HOTEL MIRCHI
-                </p>
-
-            </div>
-
-
-            <div
-                class="eventImage mehndi"
-                role="img"
-                aria-label="Mehndi ceremony">
-
-                <img
-                    src="mehndi1.webp"
-                    alt="Mehndi ceremony"
-                    loading="lazy">
-
-            </div>
-
-        </div>
-
-
-        <!-- WEDDING -->
-
-        <div class="event reveal">
-
-            <div class="eventNo">
-                03
-            </div>
-
-
-            <div class="eventMain">
-
-                <small>
-                    THE DAY WE SAY I DO
-                </small>
-
-
-                <h3>
-                    Wedding
-                </h3>
-
-
-                <p>
-                    20 DECEMBER · 7:00 PM<br>
-                    HOTEL MIRCHI
-                </p>
-
-            </div>
-
-
-            <div
-                class="eventImage wedding"
-                role="img"
-                aria-label="Wedding ceremony">
-
-                <img
-                    src="wedding1.webp"
-                    alt="Wedding ceremony"
-                    loading="lazy">
-
-            </div>
-
-        </div>
-
-
-        <!-- RECEPTION -->
-
-        <div class="event reveal">
-
-            <div class="eventNo">
-                04
-            </div>
-
-
-            <div class="eventMain">
-
-                <small>
-                    DINNER · DANCE · CELEBRATION
-                </small>
-
-
-                <h3>
-                    Reception
-                </h3>
-
-
-                <p>
-                    20 DECEMBER · 9:00 PM<br>
-                    HOTEL MIRCHI
-                </p>
-
-            </div>
-
-
-            <div
-                class="eventImage reception"
-                role="img"
-                aria-label="Reception ceremony">
-
-                <img
-                    src="reception1.webp"
-                    alt="Reception ceremony"
-                    loading="lazy">
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     COUNTDOWN
-===================================================== -->
-
-<section class="section countdown">
-
-    <div class="reveal">
-
-        <div class="sectionNo">
-            THE COUNTDOWN
-        </div>
-
-
-        <h2 class="sectionTitle">
-
-            Until forever<br>
-
-            <em>begins.</em>
-
-        </h2>
-
-    </div>
-
-
-    <div class="counter reveal">
-
-
-        <div class="counterBox">
-
-            <strong id="days">
-                00
-            </strong>
-
-            <span>
-                DAYS
-            </span>
-
-        </div>
-
-
-        <div class="counterBox">
-
-            <strong id="hours">
-                00
-            </strong>
-
-            <span>
-                HOURS
-            </span>
-
-        </div>
-
-
-        <div class="counterBox">
-
-            <strong id="minutes">
-                00
-            </strong>
-
-            <span>
-                MINUTES
-            </span>
-
-        </div>
-
-
-        <div class="counterBox">
-
-            <strong id="seconds">
-                00
-            </strong>
-
-            <span>
-                SECONDS
-            </span>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     MEMORIES
-===================================================== -->
-
-<section class="section" id="gallery">
-
-
-    <div class="reveal">
-
-        <div class="sectionNo">
-            03 — MEMORIES
-        </div>
-
-
-        <h2 class="sectionTitle">
-
-            A glimpse of<br>
-
-            <em>our world.</em>
-
-        </h2>
-
-    </div>
-
-
-    <div class="gallery">
-
-
-        <!-- 1.webp -->
-
-        <div class="galleryItem large g1 reveal">
-
-            <img
-                src="1.webp"
-                alt="Jasmine and Raman memory"
-                loading="lazy">
-
-            <div class="galleryLabel">
-                JASMINE & RAMAN · 01
-            </div>
-
-        </div>
-
-
-        <!-- 2.webp -->
-
-        <div class="galleryItem g2 reveal">
-
-            <img
-                src="2.webp"
-                alt="Jasmine and Raman memory"
-                loading="lazy">
-
-            <div class="galleryLabel">
-                TOGETHER · 02
-            </div>
-
-        </div>
-
-
-        <!-- 3.webp -->
-
-        <div class="galleryItem g3 reveal">
-
-            <img
-                src="3.webp"
-                alt="Jasmine and Raman memory"
-                loading="lazy">
-
-            <div class="galleryLabel">
-                FOREVER · 03
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     SCRATCH CARDS
-===================================================== -->
-
-<section class="section">
-
-
-    <div class="reveal">
-
-        <div class="sectionNo">
-            A LITTLE LOVE NOTE
-        </div>
-
-
-        <h2 class="sectionTitle">
-
-            Scratch to reveal<br>
-
-            <em>something sweet.</em>
-
-        </h2>
-
-    </div>
-
-
-    <div class="scratchGrid">
-
-
-        <!-- CARD 1 -->
-
-        <div class="scratchCard reveal">
-
-            <div class="messageCard">
-
-                <small>
-                    20 · 12 · 2026
-                </small>
-
-
-                <h4>
-                    Our Beginning
-                </h4>
-
-
-                <p>
-                    “Some stories are written
-                    by fate, ours was written
-                    by two hearts.”
-                </p>
-
-
-                <span>
-                    WITH LOVE ♡
-                </span>
-
-            </div>
-
-
-            <canvas class="scratchCanvas"></canvas>
-
-
-            <div class="scratchHint">
-
-                <span class="scratchCoverText">
-                    ♡
-                </span>
-
-                SCRATCH TO REVEAL
-
-            </div>
-
-        </div>
-
-
-        <!-- CARD 2 -->
-
-        <div class="scratchCard reveal">
-
-            <div class="messageCard">
-
-                <small>
-                    20 · 12 · 2026
-                </small>
-
-
-                <h4>
-                    Forever
-                </h4>
-
-
-                <p>
-                    “And suddenly,
-                    forever doesn't seem
-                    long enough.”
-                </p>
-
-
-                <span>
-                    ALWAYS & FOREVER ♡
-                </span>
-
-            </div>
-
-
-            <canvas class="scratchCanvas"></canvas>
-
-
-            <div class="scratchHint">
-
-                <span class="scratchCoverText">
-                    ♡
-                </span>
-
-                SCRATCH TO REVEAL
-
-            </div>
-
-        </div>
-
-
-        <!-- CARD 3 -->
-
-        <div class="scratchCard reveal">
-
-            <div class="messageCard">
-
-                <small>
-                    20 · 12 · 2026
-                </small>
-
-
-                <h4>
-                    Two Hearts
-                </h4>
-
-
-                <p>
-                    “Two hearts,
-                    one beautiful promise,
-                    one lifetime together.”
-                </p>
-
-
-                <span>
-                    JASMINE & RAMAN ♡
-                </span>
-
-            </div>
-
-
-            <canvas class="scratchCanvas"></canvas>
-
-
-            <div class="scratchHint">
-
-                <span class="scratchCoverText">
-                    ♡
-                </span>
-
-                SCRATCH TO REVEAL
-
-            </div>
-
-        </div>
-
-
-        <!-- CARD 4 -->
-
-        <div class="scratchCard reveal">
-
-            <div class="messageCard">
-
-                <small>
-                    20 · 12 · 2026
-                </small>
-
-
-                <h4>
-                    Our Forever
-                </h4>
-
-
-                <p>
-                    “Here's to the little moments,
-                    the big dreams,
-                    and a lifetime of love.”
-                </p>
-
-
-                <span>
-                    20 DECEMBER ♡
-                </span>
-
-            </div>
-
-
-            <canvas class="scratchCanvas"></canvas>
-
-
-            <div class="scratchHint">
-
-                <span class="scratchCoverText">
-                    ♡
-                </span>
-
-                SCRATCH TO REVEAL
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     VENUE
-===================================================== -->
-
-<section class="section" id="venue">
-
-
-    <div class="venue reveal">
-
-
-        <div class="venueText">
-
-            <div class="sectionNo">
-                04 — THE VENUE
-            </div>
-
-
-            <div class="venueName">
-
-                Hotel<br>
-
-                <em>Mirchi</em>
-
-            </div>
-
-
-            <div class="address">
-
-                Shahabad Markanda<br>
-                Haryana, India
-
-            </div>
-
-
-            <a
-                href="https://www.google.com/maps/search/?api=1&query=Hotel+Mirchi+Shahabad+Markanda+Haryana"
-                target="_blank"
-                rel="noopener"
-                class="mapBtn">
-
-                OPEN LOCATION ↗
-
-            </a>
-
-        </div>
-
-
-        <div class="venueVisual"></div>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     RSVP
-===================================================== -->
-
-<section class="section rsvp" id="rsvp">
-
-
-    <div class="reveal">
-
-
-        <div class="sectionNo">
-            05 — RSVP
-        </div>
-
-
-        <h2 class="sectionTitle">
-
-            Celebrate<br>
-
-            <em>with us.</em>
-
-        </h2>
-
-
-        <p class="rsvpText">
-
-            Your presence is the greatest gift.
-            Come share the laughter, love,
-            music and memories as Jasmine
-            and Raman begin their forever.
-
-        </p>
-
-
-        <a
-            href="https://wa.me/7082601905"
-            target="_blank"
-            rel="noopener"
-            class="rsvpBtn">
-
-            CONFIRM YOUR PRESENCE ↗
-
-        </a>
-
-    </div>
-
-</section>
-
-
-<!-- =====================================================
-     FINAL
-===================================================== -->
-
-<section class="final">
-
-
-    <div class="reveal">
-
-
-        <small>
-            AND SO THE ADVENTURE BEGINS
-        </small>
-
 
         <h2>
 
-            Jasmine
+            For the teacher<br>
+            who made a difference.
+
+        </h2>
+
+        <p>
+
+            Some classrooms are just rooms.<br>
+
+            Some teachers make them unforgettable.
+
+        </p>
+
+    </section>
+
+
+    <!-- FINAL -->
+
+    <section class="final">
+
+        <div class="heart">
+            ♡
+        </div>
+
+        <h2>
+
+            Thank You,<br>
 
             <span>
-                & Raman
+                Surbhi Mam
             </span>
 
         </h2>
 
-
         <p>
-            WITH LOVE · LAUGHTER · FOREVER
+
+            For every lesson, every little correction,
+            every encouraging word and every moment
+            that helped us become a little better.
+
+            <br><br>
+
+            You didn't just teach us subjects —
+            you left us with memories.
+
         </p>
 
-    </div>
+        <div class="signature">
 
-</section>
+            With love & gratitude
 
+        </div>
 
-<footer>
+    </section>
 
-    <span>
-        JASMINE & RAMAN
-    </span>
-
-    <span>
-        OUR FOREVER · 2026
-    </span>
-
-</footer>
+</div>
 
 
-</main>
+<!-- SCROLL -->
+
+<div
+    class="scroll-hint"
+    id="scrollHint">
+
+    Scroll to explore
+
+    <div class="scroll-line"></div>
+
+</div>
 
 
-<!-- =====================================================
-     FIXED BUTTONS
-===================================================== -->
 
-<a
-    href="#home"
-    class="backCover">
+<!-- =======================================================
+     THREE IMPORT MAP
+======================================================= -->
 
-    ↶ BACK TO COVER
+<script type="importmap">
 
-</a>
+{
+    "imports": {
+        "three":
+            "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
 
-
-<button
-    class="musicBtn"
-    id="musicBtn"
-    aria-label="Music">
-
-    ♫
-
-</button>
-
-
-<script>
-
-
-/* =====================================================
-   OPEN INVITATION
-===================================================== */
-
-const intro =
-document.getElementById("introScreen");
-
-const main =
-document.getElementById("main");
-
-const doorWrap =
-document.getElementById("doorWrap");
-
-const song =
-document.getElementById("song");
-
-let playing = false;
-
-
-/* =====================================================
-   MUSIC
-===================================================== */
-
-function startMusic(){
-
-    song.volume = .65;
-
-    song.play()
-    .then(() => {
-
-        playing = true;
-
-        document
-        .getElementById("musicBtn")
-        .textContent = "❚❚";
-
-    })
-    .catch(() => {});
-
+        "three/addons/":
+            "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
 }
 
-window.addEventListener(
-    "load",
-    () => {
+</script>
 
-        startMusic();
 
-    }
-);
 
-document.addEventListener(
-    "click",
-    () => {
+<script type="module">
 
-        if(!playing){
+import * as THREE from "three";
 
-            startMusic();
 
-        }
 
-    },
-    {
-        once:true
-    }
-);
+/* =========================================================
+   BASIC SETUP
+========================================================= */
 
+const scene =
+    new THREE.Scene();
 
-/* =====================================================
-   OPEN DOORS
-===================================================== */
 
-function openInvitation(){
-
-    if(
-        intro.classList.contains("opened")
-    ){
-
-        return;
-
-    }
-
-    intro.classList.add("opened");
-
-    main.classList.add("visible");
-
-    startMusic();
-
-
-    setTimeout(() => {
-
-        intro.classList.add("hide");
-
-        window.scrollTo({
-            top:0,
-            behavior:"instant"
-        });
-
-    },1800);
-
-}
-
-doorWrap.addEventListener(
-    "click",
-    openInvitation
-);
-
-
-/* =====================================================
-   MUSIC BUTTON
-===================================================== */
-
-const musicBtn =
-document.getElementById("musicBtn");
-
-musicBtn.onclick = () => {
-
-    if(!playing){
-
-        song.play()
-        .then(() => {
-
-            playing = true;
-
-            musicBtn.textContent =
-            "❚❚";
-
-        });
-
-    }
-
-    else{
-
-        song.pause();
-
-        playing = false;
-
-        musicBtn.textContent =
-        "♫";
-
-    }
-
-};
-
-
-/* =====================================================
-   MENU
-===================================================== */
-
-const menu =
-document.getElementById("menu");
-
-document
-.getElementById("menuBtn")
-.onclick = () => {
-
-    menu.classList.add("open");
-
-};
-
-document
-.getElementById("menuClose")
-.onclick = () => {
-
-    menu.classList.remove("open");
-
-};
-
-document
-.querySelectorAll(".menuLinks a")
-.forEach(a => {
-
-    a.onclick = () => {
-
-        menu.classList.remove("open");
-
-    };
-
-});
-
-
-/* =====================================================
-   COUNTDOWN
-   20 DECEMBER 2026 - 7 PM
-===================================================== */
-
-const weddingDate =
-new Date(
-    "December 20, 2026 19:00:00"
-).getTime();
-
-
-function countdown(){
-
-    let diff =
-    weddingDate -
-    Date.now();
-
-
-    if(diff < 0){
-
-        diff = 0;
-
-    }
-
-
-    const days =
-    Math.floor(
-        diff / 86400000
+scene.background =
+    new THREE.Color(
+        0x080706
     );
 
 
-    const hours =
-    Math.floor(
-        diff / 3600000
-    ) % 24;
+scene.fog =
+    new THREE.FogExp2(
+        0x080706,
+        .028
+    );
 
 
-    const minutes =
-    Math.floor(
-        diff / 60000
-    ) % 60;
+
+/* CAMERA */
+
+const camera =
+    new THREE.PerspectiveCamera(
+        48,
+        window.innerWidth /
+        window.innerHeight,
+        .1,
+        100
+    );
 
 
-    const seconds =
-    Math.floor(
-        diff / 1000
-    ) % 60;
-
-
-    document
-    .getElementById("days")
-    .textContent =
-    String(days)
-    .padStart(2,"0");
-
-
-    document
-    .getElementById("hours")
-    .textContent =
-    String(hours)
-    .padStart(2,"0");
-
-
-    document
-    .getElementById("minutes")
-    .textContent =
-    String(minutes)
-    .padStart(2,"0");
-
-
-    document
-    .getElementById("seconds")
-    .textContent =
-    String(seconds)
-    .padStart(2,"0");
-
-}
-
-countdown();
-
-setInterval(
-    countdown,
-    1000
+camera.position.set(
+    0,
+    3.3,
+    13
 );
 
 
-/* =====================================================
-   SCROLL REVEAL
-===================================================== */
 
-const observer =
-new IntersectionObserver(
+/* RENDERER */
 
-    entries => {
+const renderer =
+    new THREE.WebGLRenderer({
 
-        entries.forEach(entry => {
+        antialias:true,
 
-            if(entry.isIntersecting){
+        alpha:false
 
-                entry.target
-                .classList
-                .add("show");
+    });
 
-                observer.unobserve(
-                    entry.target
-                );
 
-            }
-
-        });
-
-    },
-
-    {
-        threshold:.10
-    }
-
+renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
 );
+
+
+renderer.setPixelRatio(
+    Math.min(
+        window.devicePixelRatio,
+        2
+    )
+);
+
+
+renderer.shadowMap.enabled =
+    true;
+
+
+renderer.shadowMap.type =
+    THREE.PCFSoftShadowMap;
+
+
+renderer.toneMapping =
+    THREE.ACESFilmicToneMapping;
+
+
+renderer.toneMappingExposure =
+    1.15;
 
 
 document
-.querySelectorAll(".reveal")
-.forEach(
-    el => observer.observe(el)
+    .getElementById(
+        "canvas-container"
+    )
+    .appendChild(
+        renderer.domElement
+    );
+
+
+
+/* =========================================================
+   LIGHTING
+========================================================= */
+
+const ambient =
+    new THREE.HemisphereLight(
+        0xffe6c2,
+        0x100b07,
+        1.8
+    );
+
+scene.add(
+    ambient
 );
 
 
-/* =====================================================
-   LIVE PETALS
-===================================================== */
 
-const garden =
-document.getElementById("garden");
+/* SUNSET */
+
+const sunset =
+    new THREE.DirectionalLight(
+        0xffbd73,
+        4
+    );
 
 
-for(
-    let i = 0;
-    i < 28;
-    i++
+sunset.position.set(
+    -7,
+    8,
+    5
+);
+
+
+sunset.castShadow =
+    true;
+
+
+sunset.shadow.mapSize.width =
+    2048;
+
+sunset.shadow.mapSize.height =
+    2048;
+
+
+scene.add(
+    sunset
+);
+
+
+
+/* BOARD LIGHT */
+
+const boardLight =
+    new THREE.PointLight(
+        0xffd99a,
+        5,
+        15
+    );
+
+
+boardLight.position.set(
+    0,
+    5.3,
+    -4.5
+);
+
+
+scene.add(
+    boardLight
+);
+
+
+
+/* =========================================================
+   MATERIALS
+========================================================= */
+
+const wallMat =
+    new THREE.MeshStandardMaterial({
+
+        color:0x241b14,
+
+        roughness:.9
+
+    });
+
+
+
+const floorMat =
+    new THREE.MeshStandardMaterial({
+
+        color:0x15100d,
+
+        roughness:.7
+
+    });
+
+
+
+const woodMat =
+    new THREE.MeshStandardMaterial({
+
+        color:0x4a2e1c,
+
+        roughness:.65
+
+    });
+
+
+
+const darkWood =
+    new THREE.MeshStandardMaterial({
+
+        color:0x24150d,
+
+        roughness:.85
+
+    });
+
+
+
+const goldMat =
+    new THREE.MeshStandardMaterial({
+
+        color:0xc39a58,
+
+        metalness:.65,
+
+        roughness:.3
+
+    });
+
+
+
+const blackboardMat =
+    new THREE.MeshStandardMaterial({
+
+        color:0x18251f,
+
+        roughness:1
+
+    });
+
+
+
+/* =========================================================
+   BOX HELPER
+========================================================= */
+
+function box(
+    w,
+    h,
+    d,
+    material,
+    x=0,
+    y=0,
+    z=0
 ){
 
-    const petal =
-    document.createElement("div");
+    const mesh =
+        new THREE.Mesh(
 
-    petal.className =
-    "petal";
+            new THREE.BoxGeometry(
+                w,
+                h,
+                d
+            ),
 
+            material
 
-    petal.style.left =
-    Math.random() * 100 + "%";
-
-
-    petal.style.animationDuration =
-    (
-        8 +
-        Math.random() * 12
-    ) + "s";
+        );
 
 
-    petal.style.animationDelay =
-    (
-        -Math.random() * 15
-    ) + "s";
-
-
-    garden.appendChild(
-        petal
+    mesh.position.set(
+        x,
+        y,
+        z
     );
+
+
+    mesh.castShadow =
+        true;
+
+
+    mesh.receiveShadow =
+        true;
+
+
+    scene.add(
+        mesh
+    );
+
+
+    return mesh;
 
 }
 
 
-/* =====================================================
-   SCRATCH CARDS
-===================================================== */
 
-const scratchCards =
-document.querySelectorAll(
-    ".scratchCard"
+/* =========================================================
+   CYLINDER HELPER
+========================================================= */
+
+function cylinder(
+    radius,
+    height,
+    material,
+    x=0,
+    y=0,
+    z=0
+){
+
+    const mesh =
+        new THREE.Mesh(
+
+            new THREE.CylinderGeometry(
+                radius,
+                radius,
+                height,
+                32
+            ),
+
+            material
+
+        );
+
+
+    mesh.position.set(
+        x,
+        y,
+        z
+    );
+
+
+    mesh.castShadow =
+        true;
+
+
+    mesh.receiveShadow =
+        true;
+
+
+    scene.add(
+        mesh
+    );
+
+
+    return mesh;
+
+}
+
+
+
+/* =========================================================
+   CLASSROOM
+========================================================= */
+
+
+/* FLOOR */
+
+box(
+    18,
+    .3,
+    22,
+    floorMat,
+    0,
+    -.15,
+    0
 );
 
 
-scratchCards.forEach(card => {
+
+/* BACK WALL */
+
+box(
+    18,
+    10,
+    .3,
+    wallMat,
+    0,
+    5,
+    -7
+);
 
 
-    const canvas =
-    card.querySelector(
-        ".scratchCanvas"
+
+/* LEFT WALL */
+
+box(
+    .3,
+    10,
+    22,
+    wallMat,
+    -9,
+    5,
+    0
+);
+
+
+
+/* RIGHT WALL */
+
+box(
+    .3,
+    10,
+    22,
+    wallMat,
+    9,
+    5,
+    0
+);
+
+
+
+/* CEILING */
+
+box(
+    18,
+    .3,
+    22,
+    wallMat,
+    0,
+    10,
+    0
+);
+
+
+
+/* =========================================================
+   BLACKBOARD
+========================================================= */
+
+const boardGroup =
+    new THREE.Group();
+
+
+boardGroup.position.set(
+    0,
+    5,
+    0
+);
+
+
+scene.add(
+    boardGroup
+);
+
+
+
+/* OUTER FRAME */
+
+const frame =
+    new THREE.Mesh(
+
+        new THREE.BoxGeometry(
+            8.8,
+            4.5,
+            .28
+        ),
+
+        darkWood
+
     );
 
 
-    const hint =
-    card.querySelector(
-        ".scratchHint"
+frame.position.set(
+    0,
+    0,
+    -6.78
+);
+
+
+frame.castShadow =
+    true;
+
+
+boardGroup.add(
+    frame
+);
+
+
+
+/* BOARD */
+
+const board =
+    new THREE.Mesh(
+
+        new THREE.BoxGeometry(
+            8.15,
+            3.85,
+            .12
+        ),
+
+        blackboardMat
+
     );
 
 
-    const ctx =
-    canvas.getContext("2d");
+board.position.set(
+    0,
+    0,
+    -6.58
+);
 
 
-    let isScratching = false;
+boardGroup.add(
+    board
+);
 
 
-    function resizeCanvas(){
 
-        const rect =
-        card.getBoundingClientRect();
+/* GOLD FRAME */
 
+const topFrame =
+    new THREE.Mesh(
 
-        const dpr =
-        Math.min(
-            window.devicePixelRatio || 1,
-            2
-        );
+        new THREE.BoxGeometry(
+            8.35,
+            .10,
+            .16
+        ),
 
+        goldMat
 
-        canvas.width =
-        Math.floor(
-            rect.width * dpr
-        );
+    );
 
 
-        canvas.height =
-        Math.floor(
-            rect.height * dpr
-        );
+topFrame.position.set(
+    0,
+    2.1,
+    -6.48
+);
 
 
-        canvas.style.width =
-        rect.width + "px";
+boardGroup.add(
+    topFrame
+);
 
 
-        canvas.style.height =
-        rect.height + "px";
+
+const bottomFrame =
+    topFrame.clone();
 
 
-        ctx.setTransform(
-            dpr,
-            0,
-            0,
-            dpr,
-            0,
-            0
-        );
+bottomFrame.position.y =
+    -2.1;
 
 
-        const gradient =
-        ctx.createLinearGradient(
-            0,
-            0,
-            rect.width,
-            rect.height
-        );
+boardGroup.add(
+    bottomFrame
+);
 
 
-        gradient.addColorStop(
-            0,
-            "#b48a4b"
-        );
+
+const leftFrame =
+    new THREE.Mesh(
+
+        new THREE.BoxGeometry(
+            .10,
+            4.2,
+            .16
+        ),
+
+        goldMat
+
+    );
 
 
-        gradient.addColorStop(
-            .35,
-            "#d7b477"
-        );
+leftFrame.position.set(
+    -4.15,
+    0,
+    -6.48
+);
 
 
-        gradient.addColorStop(
-            .55,
-            "#a9793c"
-        );
+boardGroup.add(
+    leftFrame
+);
 
 
-        gradient.addColorStop(
-            1,
-            "#d1aa70"
-        );
+
+const rightFrame =
+    leftFrame.clone();
 
 
-        ctx.globalCompositeOperation =
-        "source-over";
+rightFrame.position.x =
+    4.15;
 
 
-        ctx.fillStyle =
-        gradient;
+boardGroup.add(
+    rightFrame
+);
 
 
-        ctx.fillRect(
-            0,
-            0,
-            rect.width,
-            rect.height
-        );
+
+/* =========================================================
+   CHALK CANVAS
+========================================================= */
+
+const chalkCanvas =
+    document.createElement(
+        "canvas"
+    );
 
 
-        for(
-            let i=0;
-            i<150;
-            i++
-        ){
-
-            ctx.fillStyle =
-            "rgba(255,255,255,.12)";
+chalkCanvas.width =
+    1800;
 
 
-            ctx.beginPath();
+chalkCanvas.height =
+    900;
 
 
-            ctx.arc(
-
-                Math.random() *
-                rect.width,
-
-                Math.random() *
-                rect.height,
-
-                Math.random() * 2,
-
-                0,
-                Math.PI * 2
-
-            );
+const ctx =
+    chalkCanvas.getContext(
+        "2d"
+    );
 
 
-            ctx.fill();
 
-        }
+/* =========================================================
+   CHALK TEXT
+========================================================= */
+
+function drawChalkText(
+    progress=1
+){
+
+    ctx.clearRect(
+        0,
+        0,
+        chalkCanvas.width,
+        chalkCanvas.height
+    );
 
 
-        ctx.fillStyle =
-        "rgba(255,255,255,.25)";
-
-
-        ctx.font =
-        "9px Cinzel";
-
-
-        ctx.textAlign =
+    ctx.textAlign =
         "center";
 
 
-        ctx.fillText(
-
-            "SCRATCH",
-
-            rect.width / 2,
-
-            rect.height / 2 - 4
-
-        );
+    ctx.textBaseline =
+        "middle";
 
 
-        ctx.font =
-        "8px DM Sans";
+    /* CHALK DUST BACKGROUND */
+
+    for(
+        let i=0;
+        i<1300;
+        i++
+    ){
+
+        const x =
+            Math.random() *
+            chalkCanvas.width;
+
+        const y =
+            Math.random() *
+            chalkCanvas.height;
 
 
-        ctx.fillText(
+        ctx.fillStyle =
+            `rgba(
+                235,
+                232,
+                215,
+                ${Math.random()*.055}
+            )`;
 
-            "TO REVEAL ♡",
 
-            rect.width / 2,
-
-            rect.height / 2 + 14
-
+        ctx.fillRect(
+            x,
+            y,
+            Math.random()*4+1,
+            Math.random()*2+1
         );
 
     }
 
 
-    function getPosition(e){
 
-        const rect =
-        canvas.getBoundingClientRect();
+    /* MAIN TITLE */
 
-
-        let clientX;
-        let clientY;
+    const title =
+        "HAPPY TEACHER'S DAY";
 
 
-        if(
-            e.touches &&
-            e.touches.length
-        ){
-
-            clientX =
-            e.touches[0].clientX;
-
-            clientY =
-            e.touches[0].clientY;
-
-        }
-
-        else{
-
-            clientX =
-            e.clientX;
-
-            clientY =
-            e.clientY;
-
-        }
+    const visible =
+        Math.floor(
+            title.length *
+            progress
+        );
 
 
-        return {
-
-            x:
-            clientX -
-            rect.left,
-
-            y:
-            clientY -
-            rect.top
-
-        };
-
-    }
+    ctx.font =
+        "bold 118px Georgia";
 
 
-    function scratch(x,y){
+    ctx.shadowColor =
+        "rgba(255,255,240,.45)";
 
-        ctx.globalCompositeOperation =
-        "destination-out";
+
+    ctx.shadowBlur =
+        7;
+
+
+    ctx.fillStyle =
+        "rgba(240,238,220,.94)";
+
+
+    ctx.fillText(
+
+        title.substring(
+            0,
+            visible
+        ),
+
+        900,
+        330
+
+    );
+
+
+
+    /* UNDERLINE */
+
+    if(
+        progress > .55
+    ){
+
+        const lineProgress =
+            Math.min(
+                (
+                    progress-.55
+                )/.45,
+                1
+            );
+
+
+        ctx.shadowBlur =
+            4;
+
+
+        ctx.strokeStyle =
+            "rgba(225,218,195,.78)";
+
+
+        ctx.lineWidth =
+            6;
 
 
         ctx.beginPath();
 
 
-        ctx.arc(
-
-            x,
-            y,
-            24,
-            0,
-            Math.PI * 2
-
+        ctx.moveTo(
+            510,
+            410
         );
 
 
-        ctx.fill();
+        ctx.lineTo(
+            510 +
+            780 *
+            lineProgress,
+            410
+        );
 
 
-        hint.classList.add(
-            "hide"
+        ctx.stroke();
+
+    }
+
+
+
+    /* NAME */
+
+    if(
+        progress > .62
+    ){
+
+        const nameProgress =
+            Math.min(
+                (
+                    progress-.62
+                )/.38,
+                1
+            );
+
+
+        const name =
+            "Surbhi Mam ♡";
+
+
+        const visibleName =
+            Math.floor(
+                name.length *
+                nameProgress
+            );
+
+
+        ctx.font =
+            "italic 108px Georgia";
+
+
+        ctx.shadowColor =
+            "rgba(255,235,190,.45)";
+
+
+        ctx.shadowBlur =
+            10;
+
+
+        ctx.fillStyle =
+            "rgba(226,205,164,.96)";
+
+
+        ctx.fillText(
+
+            name.substring(
+                0,
+                visibleName
+            ),
+
+            900,
+            555
+
         );
 
     }
 
 
-    function checkScratch(){
+    /* CHALK SCRATCHES */
 
-        const rect =
-        canvas.getBoundingClientRect();
+    ctx.shadowBlur =
+        0;
 
 
-        const dpr =
-        Math.min(
-            window.devicePixelRatio || 1,
-            2
+    for(
+        let i=0;
+        i<350;
+        i++
+    ){
+
+        const x =
+            300 +
+            Math.random()*1200;
+
+
+        const y =
+            180 +
+            Math.random()*500;
+
+
+        ctx.fillStyle =
+            `rgba(
+                240,
+                235,
+                215,
+                ${Math.random()*.07}
+            )`;
+
+
+        ctx.fillRect(
+            x,
+            y,
+            Math.random()*8,
+            1
+        );
+
+    }
+
+}
+
+
+
+/* INITIAL */
+
+drawChalkText(
+    0
+);
+
+
+
+/* TEXTURE */
+
+const chalkTexture =
+    new THREE.CanvasTexture(
+        chalkCanvas
+    );
+
+
+chalkTexture.colorSpace =
+    THREE.SRGBColorSpace;
+
+
+chalkTexture.minFilter =
+    THREE.LinearFilter;
+
+
+chalkTexture.magFilter =
+    THREE.LinearFilter;
+
+
+chalkTexture.needsUpdate =
+    true;
+
+
+
+/* TEXT MATERIAL */
+
+const textMaterial =
+    new THREE.MeshBasicMaterial({
+
+        map:
+            chalkTexture,
+
+        transparent:
+            true,
+
+        depthWrite:
+            false
+
+    });
+
+
+
+/* TEXT PLANE */
+
+const textPlane =
+    new THREE.Mesh(
+
+        new THREE.PlaneGeometry(
+            8.0,
+            4.0
+        ),
+
+        textMaterial
+
+    );
+
+
+/*
+ IMPORTANT:
+ Board is facing +Z.
+ Camera is on +Z side.
+ Therefore chalk must sit slightly
+ in front of board toward camera.
+*/
+
+textPlane.position.set(
+    0,
+    5,
+    -6.47
+);
+
+
+textPlane.rotation.set(
+    0,
+    0,
+    0
+);
+
+
+scene.add(
+    textPlane
+);
+
+
+
+/* =========================================================
+   TEACHER DESK
+========================================================= */
+
+function createDesk(
+    x,
+    z
+){
+
+    const group =
+        new THREE.Group();
+
+
+    group.position.set(
+        x,
+        0,
+        z
+    );
+
+
+    scene.add(
+        group
+    );
+
+
+    /* TOP */
+
+    const top =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                3.4,
+                .28,
+                1.5
+            ),
+
+            woodMat
+
         );
 
 
-        const sampleWidth =
-        Math.floor(
-            rect.width * dpr
-        );
+    top.position.y =
+        2.1;
 
 
-        const sampleHeight =
-        Math.floor(
-            rect.height * dpr
-        );
+    top.castShadow =
+        true;
 
 
-        const data =
-        ctx.getImageData(
-
-            0,
-            0,
-            sampleWidth,
-            sampleHeight
-
-        ).data;
+    group.add(
+        top
+    );
 
 
-        let transparent = 0;
 
-        let total = 0;
+    /* LEGS */
+
+    const legs = [
+
+        [-1.25,1,-.5],
+        [1.25,1,-.5],
+        [-1.25,1,.5],
+        [1.25,1,.5]
+
+    ];
 
 
-        for(
-            let i=3;
-            i<data.length;
-            i+=4*20
-        ){
+    legs.forEach(
+        p=>{
 
-            total++;
+            const leg =
+                new THREE.Mesh(
+
+                    new THREE.BoxGeometry(
+                        .18,
+                        2,
+                        .18
+                    ),
+
+                    darkWood
+
+                );
 
 
-            if(
-                data[i] < 80
-            ){
+            leg.position.set(
+                p[0],
+                p[1],
+                p[2]
+            );
 
-                transparent++;
 
-            }
+            leg.castShadow =
+                true;
+
+
+            group.add(
+                leg
+            );
 
         }
+    );
+
+
+
+    /* BOOK */
+
+    const book =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                .8,
+                .12,
+                1.1
+            ),
+
+            new THREE.MeshStandardMaterial({
+
+                color:0x713b31,
+
+                roughness:.65
+
+            })
+
+        );
+
+
+    book.position.set(
+        -.6,
+        2.32,
+        0
+    );
+
+
+    book.rotation.y =
+        .25;
+
+
+    group.add(
+        book
+    );
+
+
+
+    /* APPLE */
+
+    const apple =
+        new THREE.Mesh(
+
+            new THREE.SphereGeometry(
+                .23,
+                24,
+                24
+            ),
+
+            new THREE.MeshStandardMaterial({
+
+                color:0x8d3325,
+
+                roughness:.4
+
+            })
+
+        );
+
+
+    apple.position.set(
+        .65,
+        2.4,
+        .15
+    );
+
+
+    group.add(
+        apple
+    );
+
+
+
+    /* STEM */
+
+    const stem =
+        new THREE.Mesh(
+
+            new THREE.CylinderGeometry(
+                .025,
+                .025,
+                .18,
+                8
+            ),
+
+            darkWood
+
+        );
+
+
+    stem.position.set(
+        .65,
+        2.62,
+        .15
+    );
+
+
+    group.add(
+        stem
+    );
+
+}
+
+
+createDesk(
+    0,
+    -3.7
+);
+
+
+
+/* =========================================================
+   STUDENT DESKS
+========================================================= */
+
+function createStudentDesk(
+    x,
+    z,
+    scale=1
+){
+
+    const group =
+        new THREE.Group();
+
+
+    group.position.set(
+        x,
+        0,
+        z
+    );
+
+
+    group.scale.setScalar(
+        scale
+    );
+
+
+    scene.add(
+        group
+    );
+
+
+    /* DESK TOP */
+
+    const top =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                2.1,
+                .2,
+                1.1
+            ),
+
+            woodMat
+
+        );
+
+
+    top.position.y =
+        1.45;
+
+
+    top.castShadow =
+        true;
+
+
+    group.add(
+        top
+    );
+
+
+
+    /* LEGS */
+
+    const legs = [
+
+        [-.75,.7,-.35],
+        [.75,.7,-.35],
+        [-.75,.7,.35],
+        [.75,.7,.35]
+
+    ];
+
+
+    legs.forEach(
+        p=>{
+
+            const leg =
+                new THREE.Mesh(
+
+                    new THREE.BoxGeometry(
+                        .12,
+                        1.4,
+                        .12
+                    ),
+
+                    darkWood
+
+                );
+
+
+            leg.position.set(
+                p[0],
+                p[1],
+                p[2]
+            );
+
+
+            group.add(
+                leg
+            );
+
+        }
+    );
+
+
+
+    /* CHAIR SEAT */
+
+    const seat =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                1.4,
+                .16,
+                .9
+            ),
+
+            woodMat
+
+        );
+
+
+    seat.position.set(
+        0,
+        .8,
+        .9
+    );
+
+
+    group.add(
+        seat
+    );
+
+
+
+    /* CHAIR BACK */
+
+    const back =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                1.4,
+                1,
+                .12
+            ),
+
+            woodMat
+
+        );
+
+
+    back.position.set(
+        0,
+        1.25,
+        1.25
+    );
+
+
+    group.add(
+        back
+    );
+
+}
+
+
+
+/* DESK ROWS */
+
+const deskPositions = [
+
+    [-4,-.2],
+    [0,-.2],
+    [4,-.2],
+
+    [-4,2.7],
+    [0,2.7],
+    [4,2.7],
+
+    [-4,5.4],
+    [0,5.4],
+    [4,5.4]
+
+];
+
+
+deskPositions.forEach(
+    (p,i)=>{
+
+        createStudentDesk(
+            p[0],
+            p[1],
+            i > 5 ? .9 : 1
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   STYLIZED TEACHER
+========================================================= */
+
+const teacher =
+    new THREE.Group();
+
+
+teacher.position.set(
+    0,
+    0,
+    -3
+);
+
+
+scene.add(
+    teacher
+);
+
+
+
+/* BODY */
+
+const body =
+    new THREE.Mesh(
+
+        new THREE.CapsuleGeometry(
+            .55,
+            1.4,
+            8,
+            16
+        ),
+
+        new THREE.MeshStandardMaterial({
+
+            color:0x5b3c48,
+
+            roughness:.75
+
+        })
+
+    );
+
+
+body.position.y =
+    2.1;
+
+
+body.castShadow =
+    true;
+
+
+teacher.add(
+    body
+);
+
+
+
+/* HEAD */
+
+const head =
+    new THREE.Mesh(
+
+        new THREE.SphereGeometry(
+            .43,
+            32,
+            32
+        ),
+
+        new THREE.MeshStandardMaterial({
+
+            color:0xd49a73,
+
+            roughness:.8
+
+        })
+
+    );
+
+
+head.position.y =
+    3.55;
+
+
+head.castShadow =
+    true;
+
+
+teacher.add(
+    head
+);
+
+
+
+/* HAIR */
+
+const hair =
+    new THREE.Mesh(
+
+        new THREE.SphereGeometry(
+            .46,
+            32,
+            32
+        ),
+
+        new THREE.MeshStandardMaterial({
+
+            color:0x241813,
+
+            roughness:1
+
+        })
+
+    );
+
+
+hair.scale.set(
+    1.05,
+    .65,
+    1.05
+);
+
+
+hair.position.y =
+    3.82;
+
+
+teacher.add(
+    hair
+);
+
+
+
+/* LEGS */
+
+[-.25,.25].forEach(
+    x=>{
+
+        const leg =
+            new THREE.Mesh(
+
+                new THREE.CylinderGeometry(
+                    .12,
+                    .14,
+                    .9,
+                    16
+                ),
+
+                darkWood
+
+            );
+
+
+        leg.position.set(
+            x,
+            .85,
+            0
+        );
+
+
+        teacher.add(
+            leg
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+const clockGroup =
+    new THREE.Group();
+
+
+clockGroup.position.set(
+    6.8,
+    7,
+    -6.35
+);
+
+
+scene.add(
+    clockGroup
+);
+
+
+
+const clockFace =
+    new THREE.Mesh(
+
+        new THREE.CylinderGeometry(
+            .65,
+            .65,
+            .12,
+            48
+        ),
+
+        new THREE.MeshStandardMaterial({
+
+            color:0xe6d8bd,
+
+            roughness:.6
+
+        })
+
+    );
+
+
+clockFace.rotation.x =
+    Math.PI/2;
+
+
+clockGroup.add(
+    clockFace
+);
+
+
+
+/* CLOCK CENTER */
+
+const clockCenter =
+    new THREE.Mesh(
+
+        new THREE.SphereGeometry(
+            .07,
+            16,
+            16
+        ),
+
+        darkWood
+
+    );
+
+
+clockCenter.position.z =
+    -.1;
+
+
+clockGroup.add(
+    clockCenter
+);
+
+
+
+/* =========================================================
+   PLANTS
+========================================================= */
+
+function createPlant(
+    x,
+    z
+){
+
+    cylinder(
+        .45,
+        .65,
+
+        new THREE.MeshStandardMaterial({
+
+            color:0x704b36,
+
+            roughness:.8
+
+        }),
+
+        x,
+        .35,
+        z
+    );
+
+
+
+    for(
+        let i=0;
+        i<7;
+        i++
+    ){
+
+        const leaf =
+            new THREE.Mesh(
+
+                new THREE.SphereGeometry(
+                    .25,
+                    16,
+                    16
+                ),
+
+                new THREE.MeshStandardMaterial({
+
+                    color:0x34503a,
+
+                    roughness:.9
+
+                })
+
+            );
+
+
+        leaf.scale.set(
+            .6,
+            1.5,
+            .3
+        );
+
+
+        leaf.position.set(
+
+            x +
+            (Math.random()-.5)*.7,
+
+            .9 +
+            Math.random()*.7,
+
+            z +
+            (Math.random()-.5)*.5
+
+        );
+
+
+        leaf.rotation.z =
+            Math.random()-.5;
+
+
+        scene.add(
+            leaf
+        );
+
+    }
+
+}
+
+
+createPlant(
+    -7,
+    -5.8
+);
+
+
+createPlant(
+    7,
+    -5.8
+);
+
+
+
+/* =========================================================
+   CEILING FAN
+========================================================= */
+
+const fan =
+    new THREE.Group();
+
+
+fan.position.set(
+    0,
+    9.5,
+    0
+);
+
+
+scene.add(
+    fan
+);
+
+
+
+const fanMotor =
+    new THREE.Mesh(
+
+        new THREE.CylinderGeometry(
+            .25,
+            .25,
+            .35,
+            20
+        ),
+
+        darkWood
+
+    );
+
+
+fanMotor.rotation.x =
+    Math.PI/2;
+
+
+fan.add(
+    fanMotor
+);
+
+
+
+for(
+    let i=0;
+    i<4;
+    i++
+){
+
+    const blade =
+        new THREE.Mesh(
+
+            new THREE.BoxGeometry(
+                .18,
+                2.8,
+                .08
+            ),
+
+            woodMat
+
+        );
+
+
+    blade.position.y =
+        1.4;
+
+
+    blade.rotation.z =
+        i *
+        Math.PI/2;
+
+
+    blade.castShadow =
+        true;
+
+
+    fan.add(
+        blade
+    );
+
+}
+
+
+
+/* =========================================================
+   WINDOWS
+========================================================= */
+
+function createWindow(
+    x,
+    z
+){
+
+    const glow =
+        new THREE.Mesh(
+
+            new THREE.PlaneGeometry(
+                4,
+                4
+            ),
+
+            new THREE.MeshBasicMaterial({
+
+                color:0xffc878,
+
+                transparent:true,
+
+                opacity:.16
+
+            })
+
+        );
+
+
+    glow.position.set(
+        x,
+        5,
+        z
+    );
+
+
+    glow.rotation.y =
+        x < 0
+        ? Math.PI/2
+        : -Math.PI/2;
+
+
+    scene.add(
+        glow
+    );
+
+}
+
+
+createWindow(
+    -8.8,
+    -1
+);
+
+
+createWindow(
+    8.8,
+    -1
+);
+
+
+
+/* =========================================================
+   DUST PARTICLES
+========================================================= */
+
+const particleCount =
+    900;
+
+
+const particlePositions =
+    new Float32Array(
+        particleCount * 3
+    );
+
+
+for(
+    let i=0;
+    i<particleCount;
+    i++
+){
+
+    particlePositions[
+        i*3
+    ] =
+        (Math.random()-.5)*16;
+
+
+    particlePositions[
+        i*3+1
+    ] =
+        Math.random()*9;
+
+
+    particlePositions[
+        i*3+2
+    ] =
+        (Math.random()-.5)*15;
+
+}
+
+
+
+const particleGeometry =
+    new THREE.BufferGeometry();
+
+
+particleGeometry.setAttribute(
+
+    "position",
+
+    new THREE.BufferAttribute(
+        particlePositions,
+        3
+    )
+
+);
+
+
+
+const particleMaterial =
+    new THREE.PointsMaterial({
+
+        color:0xf1d29a,
+
+        size:.026,
+
+        transparent:true,
+
+        opacity:.5
+
+    });
+
+
+
+const particles =
+    new THREE.Points(
+
+        particleGeometry,
+
+        particleMaterial
+
+    );
+
+
+scene.add(
+    particles
+);
+
+
+
+/* =========================================================
+   CAMERA SYSTEM
+========================================================= */
+
+let scrollProgress =
+    0;
+
+
+let currentZ =
+    13;
+
+
+let currentY =
+    3.3;
+
+
+let currentX =
+    0;
+
+
+
+function updateCamera(){
+
+    /*
+        0 = outside classroom
+
+        0.25 = entering
+
+        0.50 = classroom
+
+        0.75 = blackboard
+
+        1 = final
+    */
+
+
+    let targetZ;
+
+    let targetY;
+
+    let targetX;
+
+
+    if(
+        scrollProgress < .25
+    ){
+
+        const p =
+            scrollProgress / .25;
+
+
+        targetZ =
+            13 -
+            p * 4;
+
+
+        targetY =
+            3.3 +
+            p * .2;
+
+
+        targetX =
+            Math.sin(p*Math.PI) *
+            .6;
+
+    }
+
+    else if(
+        scrollProgress < .65
+    ){
+
+        const p =
+            (
+                scrollProgress-.25
+            )/.4;
+
+
+        targetZ =
+            9 -
+            p * 6;
+
+
+        targetY =
+            3.5 +
+            p * 1.0;
+
+
+        targetX =
+            Math.sin(
+                p*Math.PI*1.2
+            )*.45;
+
+    }
+
+    else{
+
+        const p =
+            (
+                scrollProgress-.65
+            )/.35;
+
+
+        targetZ =
+            3 -
+            p * 1.5;
+
+
+        targetY =
+            4.5 +
+            p * .7;
+
+
+        targetX =
+            Math.sin(
+                p*Math.PI
+            )*.25;
+
+    }
+
+
+
+    currentZ +=
+        (
+            targetZ -
+            currentZ
+        ) * .045;
+
+
+    currentY +=
+        (
+            targetY -
+            currentY
+        ) * .045;
+
+
+    currentX +=
+        (
+            targetX -
+            currentX
+        ) * .045;
+
+
+    camera.position.set(
+        currentX,
+        currentY,
+        currentZ
+    );
+
+
+    /* LOOK AT BOARD */
+
+    const lookX =
+        Math.sin(
+            scrollProgress *
+            Math.PI
+        ) * .15;
+
+
+    const lookY =
+        3.5 +
+        scrollProgress*.7;
+
+
+    const lookZ =
+        -4.5 -
+        scrollProgress*.8;
+
+
+    camera.lookAt(
+        lookX,
+        lookY,
+        lookZ
+    );
+
+}
+
+
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+window.addEventListener(
+    "scroll",
+    ()=>{
+
+        const max =
+            document.body.scrollHeight -
+            window.innerHeight;
+
+
+        scrollProgress =
+            Math.max(
+                0,
+                Math.min(
+                    1,
+                    window.scrollY /
+                    max
+                )
+            );
+
+
+        updateCamera();
+
+
+        const hint =
+            document.getElementById(
+                "scrollHint"
+            );
+
+
+        hint.style.opacity =
+            scrollProgress > .06
+            ? "0"
+            : ".7";
+
+    }
+);
+
+
+
+/* =========================================================
+   ENTER
+========================================================= */
+
+document
+    .getElementById(
+        "enterBtn"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
+
+            document
+                .getElementById(
+                    "intro"
+                )
+                .classList.add(
+                    "hide"
+                );
+
+
+            animateChalk();
+
+
+            window.scrollTo({
+
+                top:0,
+
+                behavior:"smooth"
+
+            });
+
+        }
+    );
+
+
+
+/* =========================================================
+   CHALK ANIMATION
+========================================================= */
+
+function animateChalk(){
+
+    let start =
+        null;
+
+
+    function frame(
+        time
+    ){
+
+        if(
+            !start
+        ){
+
+            start =
+                time;
+
+        }
+
+
+        const elapsed =
+            time -
+            start;
+
+
+        const duration =
+            4500;
+
+
+        const p =
+            Math.min(
+                elapsed /
+                duration,
+                1
+            );
+
+
+        /*
+           Smooth chalk reveal
+        */
+
+        const eased =
+            1 -
+            Math.pow(
+                1-p,
+                3
+            );
+
+
+        drawChalkText(
+            eased
+        );
+
+
+        chalkTexture.needsUpdate =
+            true;
 
 
         if(
-            total > 0 &&
-            transparent / total > .42
+            p < 1
         ){
 
-            canvas.style.transition =
-            "opacity .5s ease";
-
-
-            canvas.style.opacity =
-            "0";
-
-
-            hint.classList.add(
-                "hide"
+            requestAnimationFrame(
+                frame
             );
-
-
-            setTimeout(() => {
-
-                canvas.style.display =
-                "none";
-
-            },500);
 
         }
 
     }
 
 
-    canvas.addEventListener(
-        "mousedown",
-        e => {
+    requestAnimationFrame(
+        frame
+    );
 
-            isScratching = true;
-
-
-            const pos =
-            getPosition(e);
+}
 
 
-            scratch(
-                pos.x,
-                pos.y
-            );
 
-        }
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+const clock =
+    new THREE.Clock();
+
+
+
+function animate(){
+
+    requestAnimationFrame(
+        animate
     );
 
 
-    canvas.addEventListener(
-        "mousemove",
-        e => {
-
-            if(!isScratching){
-
-                return;
-
-            }
+    const t =
+        clock.getElapsedTime();
 
 
-            const pos =
-            getPosition(e);
+    /* FAN */
+
+    fan.rotation.y =
+        t*.75;
 
 
-            scratch(
-                pos.x,
-                pos.y
-            );
 
-        }
+    /* DUST */
+
+    particles.rotation.y =
+        t*.012;
+
+
+    particles.position.y =
+        Math.sin(
+            t*.18
+        )*.08;
+
+
+
+    /* TEACHER BREATHING */
+
+    teacher.position.y =
+        Math.sin(
+            t*1.3
+        )*.015;
+
+
+
+    /* LIGHT FLICKER */
+
+    sunset.intensity =
+        3.6 +
+        Math.sin(
+            t*.4
+        )*.2;
+
+
+
+    /* BOARD LIGHT */
+
+    boardLight.intensity =
+        4.7 +
+        Math.sin(
+            t*.7
+        )*.15;
+
+
+
+    updateCamera();
+
+
+    renderer.render(
+        scene,
+        camera
     );
 
-
-    window.addEventListener(
-        "mouseup",
-        () => {
-
-            if(isScratching){
-
-                checkScratch();
-
-            }
+}
 
 
-            isScratching = false;
-
-        }
-    );
+animate();
 
 
-    canvas.addEventListener(
-        "touchstart",
-        e => {
 
-            e.preventDefault();
+/* =========================================================
+   LOADER
+========================================================= */
 
+window.addEventListener(
+    "load",
+    ()=>{
 
-            isScratching = true;
+        setTimeout(
+            ()=>{
 
+                document
+                    .getElementById(
+                        "loader"
+                    )
+                    .classList.add(
+                        "hide"
+                    );
 
-            const pos =
-            getPosition(e);
+            },
+            1900
+        );
 
-
-            scratch(
-                pos.x,
-                pos.y
-            );
-
-        },
-        {
-            passive:false
-        }
-    );
-
-
-    canvas.addEventListener(
-        "touchmove",
-        e => {
-
-            e.preventDefault();
+    }
+);
 
 
-            if(!isScratching){
 
-                return;
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
-            }
+window.addEventListener(
+    "resize",
+    ()=>{
 
-
-            const pos =
-            getPosition(e);
-
-
-            scratch(
-                pos.x,
-                pos.y
-            );
-
-        },
-        {
-            passive:false
-        }
-    );
+        camera.aspect =
+            window.innerWidth /
+            window.innerHeight;
 
 
-    canvas.addEventListener(
-        "touchend",
-        () => {
-
-            checkScratch();
-
-            isScratching = false;
-
-        }
-    );
+        camera.updateProjectionMatrix();
 
 
-    resizeCanvas();
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
 
-
-    let resizeTimer;
-
-
-    window.addEventListener(
-        "resize",
-        () => {
-
-            clearTimeout(
-                resizeTimer
-            );
-
-
-            resizeTimer =
-            setTimeout(
-                resizeCanvas,
-                200
-            );
-
-        }
-    );
-
-});
-
-
-/* =====================================================
-   IMAGE ERROR CHECK
-===================================================== */
-
-document
-.querySelectorAll("img")
-.forEach(img => {
-
-    img.addEventListener(
-        "error",
-        () => {
-
-            console.warn(
-                "Image not found:",
-                img.src
-            );
-
-        }
-    );
-
-});
+    }
+);
 
 </script>
 
 </body>
 </html>
+```
+
